@@ -3,9 +3,7 @@ package com.example.cygoapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -33,18 +31,6 @@ public class MainActivity extends AppCompatActivity {
         logo = findViewById(R.id.logoImg);
 
         logo.setAnimation(topAnim);
-
-        SharedPreferences pref = getSharedPreferences("ActivityPref", Context.MODE_PRIVATE);
-
-        if(pref.getBoolean("activity_executed",false)){
-            Intent intent = new Intent(MainActivity.this,SignUp.class);
-            startActivity(intent);
-            finish();
-        }else{
-           SharedPreferences.Editor ed = pref.edit();
-           ed.putBoolean("activity_executed", true);
-           ed.commit();
-        }
 
         new Handler().postDelayed(new Runnable() {
             @Override
