@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
+        Boolean isFirstRun = getSharedPreferences("PREFERENCE",MODE_PRIVATE).getBoolean("isFirstRun", true);
+
         topAnim= AnimationUtils.loadAnimation(this,R.anim.top_animation);
 
         logo = findViewById(R.id.logoImg);
@@ -35,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+
+                if(isFirstRun){
+                    getSharedPreferences("PREFERENCE",MODE_PRIVATE).edit().putBoolean("isFirstRun", false).commit();
+
+                    Intent intent = new Intent(MainActivity.this,GetStart.class);
+                    startActivity(intent);
+                }
+
                 Intent intent = new Intent(MainActivity.this,Login.class);
                 Pair[] pairs = new Pair[1];
                 pairs[0] = new Pair<View,String>(logo,"logoTransition");
