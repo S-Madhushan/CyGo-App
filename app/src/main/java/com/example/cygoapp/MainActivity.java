@@ -39,11 +39,12 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
 
                 if(isFirstRun){
-                    getSharedPreferences("PREFERENCE",MODE_PRIVATE).edit().putBoolean("isFirstRun", false).commit();
 
                     Intent intent = new Intent(MainActivity.this,GetStart.class);
                     startActivity(intent);
                 }
+
+                getSharedPreferences("PREFERENCE",MODE_PRIVATE).edit().putBoolean("isFirstRun", false).commit();
 
                 Intent intent = new Intent(MainActivity.this,Login.class);
                 Pair[] pairs = new Pair[1];
