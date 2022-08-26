@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUp"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:padding="20dp">
+
+
+   <ImageView
+       android:layout_width="150dp"
+       android:layout_height="150dp"
+       android:src="@drawable/logo"/>
+
+    <TextView
+        android:id="@+id/logoName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="Welcome"
+        android:textSize="40sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="-20dp"/>
+
+    <TextView
+        android:id="@+id/slogan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign up to be a Cygoian"
+        android:textSize="16sp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:hint="Full Name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/email"
+        android:hint="Email"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>
