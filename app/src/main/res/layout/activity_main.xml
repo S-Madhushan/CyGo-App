@@ -4,21 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="#1de099">
+    android:background="#1DE099"
+    tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/logoImg"
-        android:layout_width="202dp"
-        android:layout_height="213dp"
-        android:layout_marginStart="155dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="156dp"
-        android:transitionName="logoTransition"
-        android:src="@drawable/logo"
+        android:id="@+id/imageView"
+        android:layout_width="206dp"
+        android:layout_height="109dp"
+        android:layout_marginStart="103dp"
+        android:layout_marginTop="311dp"
+        android:layout_marginEnd="103dp"
+        android:layout_marginBottom="311dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/cygo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

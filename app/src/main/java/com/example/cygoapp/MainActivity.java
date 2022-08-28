@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         topAnim= AnimationUtils.loadAnimation(this,R.anim.top_animation);
 
-        logo = findViewById(R.id.logoImg);
+
 
         logo.setAnimation(topAnim);
 
