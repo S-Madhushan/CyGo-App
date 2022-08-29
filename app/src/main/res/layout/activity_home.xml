@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity_home">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDrivewithCyGoins"
+        style="@style/DefaultSolid"
+        android:layout_width="0dp"
+        android:layout_height="71dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="50dp"
+        android:text="Drive with CyGoins"
+        android:textColor="@color/black"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgHowugo" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGowithCyGoins"
+        style="@style/DefaultSolid"
+        android:layout_width="0dp"
+        android:layout_height="71dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="50dp"
+        android:text="Go with CyGoins"
+        android:textColor="@color/black"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView11" />
+
+    <ImageView
+        android:id="@+id/imgHowugo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView17"
+        app:srcCompat="@drawable/how_you_go_today_" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="25dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="188dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="188dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnDrivewithCyGoins"
+        app:srcCompat="@drawable/or" />
+
+    <ImageView
+        android:id="@+id/imageView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/background" />
+
+    <ImageView
+        android:id="@+id/imageView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/shape" />
+
+    <ImageView
+        android:id="@+id/imgUserAcc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="116dp"
+        android:layout_marginEnd="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.136"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView18"
+        app:srcCompat="@drawable/user_acc" />
+
+    <TextView
+        android:id="@+id/txtNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="100dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Good Morning!"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.222"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView18" />
+</androidx.constraintlayout.widget.ConstraintLayout>

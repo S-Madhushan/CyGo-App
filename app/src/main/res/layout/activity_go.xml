@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+   <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity_Go">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/txtDestination2"
+        style="@style/DefaultSolid"
+        android:layout_width="264dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="14dp"
+        android:backgroundTint="#8eefcc"
+        android:ems="10"
+        android:fontFamily="@font/poppins_bold"
+        android:foregroundTint="#1DE099"
+        android:hint="Search your Destination"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView12" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/txtPickup"
+        style="@style/DefaultSolid"
+        android:layout_width="302dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="54dp"
+        android:backgroundTint="#8eefcc"
+        android:ems="10"
+        android:fontFamily="@font/poppins_bold"
+        android:foregroundTint="#1DE099"
+        android:hint="Enter your pickup location"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView13" />
+
+ <com.google.android.material.button.MaterialButton
+     android:id="@+id/txtDropOff"
+     style="@style/DefaultSolid"
+     android:layout_width="302dp"
+     android:layout_height="59dp"
+     android:layout_marginStart="55dp"
+     android:layout_marginTop="2dp"
+     android:layout_marginEnd="54dp"
+     android:backgroundTint="#8eefcc"
+     android:ems="10"
+     android:fontFamily="@font/poppins_bold"
+     android:foregroundTint="#1DE099"
+     android:hint="Enter your Drop off location"
+     android:inputType="textPersonName"
+     android:textAlignment="center"
+     android:textSize="14sp"
+     app:layout_constraintEnd_toEndOf="parent"
+     app:layout_constraintHorizontal_bias="1.0"
+     app:layout_constraintStart_toStartOf="parent"
+     app:layout_constraintTop_toBottomOf="@+id/imageView14" />
+
+ <com.google.android.material.button.MaterialButton
+     android:id="@+id/btnSearch"
+     style="@style/DefaultSolid"
+     android:layout_width="0dp"
+     android:layout_height="71dp"
+     android:layout_marginStart="50dp"
+     android:layout_marginTop="16dp"
+     android:layout_marginEnd="50dp"
+     android:text="Search"
+     android:textAllCaps="false"
+     android:textColor="@color/black"
+     android:textSize="16sp"
+     app:layout_constraintEnd_toEndOf="parent"
+     app:layout_constraintHorizontal_bias="0.0"
+     app:layout_constraintStart_toStartOf="parent"
+     app:layout_constraintTop_toBottomOf="@+id/txtDropOff" />
+
+ <ImageView
+        android:id="@+id/imageView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="157dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/where_do_you_want_go_"
+        tools:layout_editor_absoluteY="280dp" />
+
+    <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="43dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtDestination2"
+        app:layout_constraintTop_toBottomOf="@+id/imageView9"
+        app:srcCompat="@drawable/searchpng" />
+
+    <ImageView
+        android:id="@+id/imageView14"
+        android:layout_width="22dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="194dp"
+        android:layout_marginEnd="195dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/arrow_1"
+        tools:layout_editor_absoluteY="467dp" />
+
+    <ImageView
+        android:id="@+id/imdEmergency"
+        android:layout_width="106dp"
+        android:layout_height="14dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="153dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSearch"
+        app:srcCompat="@drawable/emergency" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/background" />
+
+    <TextView
+        android:id="@+id/txtNote2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="100dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Good Morning!"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.274"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgUserAcc2" />
+
+    <ImageView
+        android:id="@+id/imgUserAcc2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="108dp"
+        android:layout_marginEnd="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.14"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView16"
+        app:srcCompat="@drawable/user_acc" />
+
+    <ImageView
+        android:id="@+id/imageView16"
+        android:layout_width="187dp"
+        android:layout_height="173dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/shape"
+        tools:layout_editor_absoluteY="-12dp" />
+
+    <ImageView
+        android:id="@+id/imageView24"
+        android:layout_width="34dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@+id/imageView9"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back_arrow" />
+</androidx.constraintlayout.widget.ConstraintLayout>

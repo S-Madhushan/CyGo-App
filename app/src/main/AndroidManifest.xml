@@ -14,6 +14,27 @@
         android:theme="@style/Theme.CyGoApp"
         tools:targetApi="31">
         <activity
+            android:name=".activity_endTrip"
+            android:exported="false" />
+        <activity
+            android:name=".activity_select_user"
+            android:exported="false" />
+        <activity
+            android:name=".activity_Users_list"
+            android:exported="false" />
+        <activity
+            android:name=".activity_user"
+            android:exported="false" />
+        <activity
+            android:name=".activity_drive"
+            android:exported="false" />
+        <activity
+            android:name=".activity_Go"
+            android:exported="false" />
+        <activity
+            android:name=".activity_home"
+            android:exported="false" />
+        <activity
             android:name=".activity_sign_in"
             android:exported="false" />
         <activity

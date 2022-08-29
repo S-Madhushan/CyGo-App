@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity_endTrip">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnEnd_with"
+        style="@style/DefaultSolid"
+        android:layout_width="0dp"
+        android:layout_height="71dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="50dp"
+        android:text="End trip with user"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtFeedback" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/txtFeedback"
+        style="@style/DefaultSolid"
+        android:layout_width="302dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="54dp"
+        android:backgroundTint="#8eefcc"
+        android:ems="10"
+        android:fontFamily="@font/poppins_bold"
+        android:foregroundTint="#1DE099"
+        android:hint="Give your feedback"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbluserFeedback" />
+
+    <ImageView
+        android:id="@+id/imageView86"
+        android:layout_width="67dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="165dp"
+        app:layout_constraintStart_toEndOf="@+id/imageView85"
+        app:layout_constraintTop_toBottomOf="@+id/imageView79"
+        app:srcCompat="@drawable/star_19" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGo_with2"
+        style="@style/DefaultSolid"
+        android:layout_width="203dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="50dp"
+        android:text="Emergency"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView80" />
+
+    <ImageView
+        android:id="@+id/imageView68"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/shape" />
+
+    <ImageView
+        android:id="@+id/imageView77"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back_arrow" />
+
+    <ImageView
+        android:id="@+id/imageView78"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="94dp"
+        android:layout_marginTop="108dp"
+        android:layout_marginEnd="67dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView68"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/have_you_any_trouble_" />
+
+    <ImageView
+        android:id="@+id/imageView79"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="43dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/imageView68"
+        app:layout_constraintTop_toBottomOf="@+id/imageView78"
+        app:srcCompat="@drawable/contact_us__011__xxxx_xxx" />
+
+    <ImageView
+        android:id="@+id/imageView80"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="192dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="193dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView79"
+        app:srcCompat="@drawable/or" />
+
+    <ImageView
+        android:id="@+id/imageView81"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="172dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnGo_with2"
+        app:srcCompat="@drawable/have_you_safty_ride_" />
+
+    <ImageView
+        android:id="@+id/imageView82"
+        android:layout_width="71dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="23dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView81"
+        app:srcCompat="@drawable/star_5" />
+
+    <ImageView
+        android:id="@+id/imageView83"
+        android:layout_width="71dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toEndOf="@+id/imageView82"
+        app:layout_constraintTop_toBottomOf="@+id/imageView81"
+        app:srcCompat="@drawable/star_5" />
+
+    <ImageView
+        android:id="@+id/imageView84"
+        android:layout_width="67dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="23dp"
+        app:layout_constraintStart_toEndOf="@+id/imageView83"
+        app:layout_constraintTop_toBottomOf="@+id/imageView81"
+        app:srcCompat="@drawable/star_19" />
+
+    <ImageView
+        android:id="@+id/imageView85"
+        android:layout_width="67dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="78dp"
+        app:layout_constraintStart_toEndOf="@+id/imageView84"
+        app:layout_constraintTop_toBottomOf="@+id/btnGo_with2"
+        app:srcCompat="@drawable/star_19" />
+
+    <TextView
+        android:id="@+id/lbluserFeedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="100dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="What you think about User?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbluserPoints" />
+
+    <TextView
+        android:id="@+id/lbluserPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="163dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="164dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Points - 2.0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView84" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
