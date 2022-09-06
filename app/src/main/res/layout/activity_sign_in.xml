@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity_sign_in">
+
+    <TextView
+        android:id="@+id/txtsignUp2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="83dp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Sign Up"
+        android:textColor="@color/primary_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textAccSignup2"
+        app:layout_constraintTop_toBottomOf="@+id/btnSignIn" />
+
+    <TextView
+        android:id="@+id/textAccSignup2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="1dp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Already have an account ?"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSignIn" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSignIn"
+        android:layout_width="320dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="50dp"
+        android:text="Sign In"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblForgotPass" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/txtSigninEmail"
+        android:layout_width="314dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="50dp"
+        android:backgroundTint="#8eefcc"
+        android:ems="10"
+        android:fontFamily="@font/poppins_regular"
+        android:foregroundTint="#1DE099"
+        android:hint="Enter Your Email"
+        android:inputType="textPersonName"
+        android:textAlignment="textStart"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/txtSigninPassword"
+        android:layout_width="314dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="50dp"
+        android:backgroundTint="#8eefcc"
+        android:ems="10"
+        android:fontFamily="@font/poppins_regular"
+        android:foregroundTint="#1DE099"
+        android:hint="Enter Password"
+        android:inputType="textPersonName"
+        android:textAlignment="textStart"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSigninEmail" />
+
+    <TextView
+        android:id="@+id/lblWelBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="138dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="144dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Welcome Back!"
+        android:textSize="16sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/imageView7"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="149dp"
+        android:layout_height="144dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/shape" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="313dp"
+        android:layout_height="217dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblWelBack"
+        app:srcCompat="@drawable/group_9" />
+
+    <TextView
+        android:id="@+id/lblForgotPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="50dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Forgot Password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSigninPassword" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="80dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Read Terms and Conditions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtsignUp2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

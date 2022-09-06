@@ -1,68 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUp">
+    tools:context=".SignUp"
+    android:orientation="vertical"
+    android:background="#fff" >
 
+    <ImageView
+        android:id="@+id/shape"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="-10dp"
+        android:layout_marginBottom="-12dp"
+        android:src="@drawable/shape" />
 
     <TextView
         android:id="@+id/lblWelOnboard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="60dp"
+        android:layout_width="180dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="-50dp"
         android:layout_marginEnd="140dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="Welcome Onboard!"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.68"
-        app:layout_constraintStart_toEndOf="@+id/imageView6"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="16sp" />
 
-    <com.google.android.material.button.MaterialButton
+    <EditText
         android:id="@+id/txtName"
         android:layout_width="310dp"
         android:layout_height="45dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="50dp"
-        android:backgroundTint="#8eefcc"
+        android:background="@drawable/rounded_edittext"
         android:ems="10"
         android:fontFamily="@font/poppins_regular"
         android:foregroundTint="#1DE099"
+        android:paddingLeft="10dp"
         android:hint="Enter Your Name"
         android:inputType="textPersonName"
         android:textAlignment="textStart"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblWelOnboard" />
+        android:textSize="12sp"/>
 
-    <com.google.android.material.button.MaterialButton
+    <EditText
         android:id="@+id/txtContact"
-        android:layout_width="0dp"
+        android:layout_width="310dp"
         android:layout_height="46dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="50dp"
-        android:backgroundTint="#8eefcc"
+        android:background="@drawable/rounded_edittext"
         android:ems="10"
+        android:paddingLeft="10dp"
         android:fontFamily="@font/poppins_regular"
         android:foregroundTint="#1DE099"
         android:hint="Enter Your Contact Number"
-        android:inputType="textPersonName"
+        android:inputType="phone"
         android:textAlignment="textStart"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.475"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtID" />
+        android:textSize="12sp" />
 
-    <com.google.android.material.button.MaterialButton
+    <EditText
         android:id="@+id/txtEmail"
         android:layout_width="0dp"
         android:layout_height="46dp"
@@ -82,7 +81,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtContact" />
 
-    <com.google.android.material.button.MaterialButton
+    <EditText
         android:id="@+id/txtPassword"
         android:layout_width="0dp"
         android:layout_height="46dp"
@@ -102,7 +101,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
 
-    <com.google.android.material.button.MaterialButton
+    <EditText
         android:id="@+id/txtConfPassword"
         android:layout_width="0dp"
         android:layout_height="46dp"
@@ -122,7 +121,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtPassword" />
 
-    <com.google.android.material.button.MaterialButton
+    <EditText
         android:id="@+id/txtID"
         android:layout_width="311dp"
         android:layout_height="101dp"
@@ -141,15 +140,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtName" />
 
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="150dp"
-        android:layout_height="156dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/shape" />
 
-    <com.google.android.material.button.MaterialButton
+
+    <Button
         android:id="@+id/btnRegister"
         android:layout_width="308dp"
         android:layout_height="58dp"
@@ -176,7 +169,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
 
-    <TextView
+    <Button
         android:id="@+id/txtsignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -189,4 +182,4 @@
         app:layout_constraintStart_toEndOf="@+id/textAccSignup"
         app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

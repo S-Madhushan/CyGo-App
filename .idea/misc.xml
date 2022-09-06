@@ -4,10 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/drawable/cygo.xml" value="0.158" />
+        <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/drawable/rounded_edittext.xml" value="0.158" />
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/drawable/welcome_everyone.xml" value="0.158" />
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_drive.xml" value="0.22" />
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_end_trip.xml" value="0.2" />
-        <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_get_start.xml" value="0.2" />
+        <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_get_start.xml" value="0.136" />
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_go.xml" value="0.18" />
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_home.xml" value="0.2" />
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_login.xml" value="0.209375" />
