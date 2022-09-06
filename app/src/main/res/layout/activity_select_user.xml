@@ -8,7 +8,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGo_with"
-        style="@style/DefaultSolid"
         android:layout_width="0dp"
         android:layout_height="71dp"
         android:layout_marginStart="50dp"
@@ -25,7 +24,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/txtUser_from"
-        style="@style/DefaultSolid"
         android:layout_width="264dp"
         android:layout_height="57dp"
         android:layout_marginStart="73dp"
@@ -44,7 +42,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/txtUser_TO"
-        style="@style/DefaultSolid"
         android:layout_width="264dp"
         android:layout_height="57dp"
         android:layout_marginStart="73dp"

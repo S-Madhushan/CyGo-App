@@ -15,13 +15,5 @@
         <item name="android:windowContentTransitions">true</item>
         <!-- Customize your theme here. -->
     </style>
-    <style name="ShapeAppearanceOverlay.MyApp.Button.Rounded" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">10mm</item>
-        <item name="fontFamily">@font/poppins_bold</item>
-    </style>
 
-    <style name="DefaultSolid" parent="Widget.MaterialComponents.Button">
-        <item name="itemShapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MyApp.Button.Rounded</item>
-    </style>
 </resources>

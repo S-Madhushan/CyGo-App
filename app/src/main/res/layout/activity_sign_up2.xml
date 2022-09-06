@@ -4,29 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="activity_signUp">
+    tools:context=".SignUp">
+
 
     <TextView
         android:id="@+id/lblWelOnboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="140dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="Welcome Onboard!"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.68"
         app:layout_constraintStart_toEndOf="@+id/imageView6"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/txtName"
-        style="@style/DefaultSolid"
         android:layout_width="310dp"
         android:layout_height="45dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="50dp"
         android:backgroundTint="#8eefcc"
         android:ems="10"
@@ -37,12 +38,12 @@
         android:textAlignment="textStart"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lblWelOnboard" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/txtContact"
-        style="@style/DefaultSolid"
         android:layout_width="0dp"
         android:layout_height="46dp"
         android:layout_marginStart="50dp"
@@ -63,7 +64,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/txtEmail"
-        style="@style/DefaultSolid"
         android:layout_width="0dp"
         android:layout_height="46dp"
         android:layout_marginStart="50dp"
@@ -84,7 +84,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/txtPassword"
-        style="@style/DefaultSolid"
         android:layout_width="0dp"
         android:layout_height="46dp"
         android:layout_marginStart="50dp"
@@ -105,7 +104,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/txtConfPassword"
-        style="@style/DefaultSolid"
         android:layout_width="0dp"
         android:layout_height="46dp"
         android:layout_marginStart="50dp"
@@ -126,7 +124,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/txtID"
-        style="@style/DefaultSolid"
         android:layout_width="311dp"
         android:layout_height="101dp"
         android:layout_marginStart="50dp"
@@ -154,7 +151,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRegister"
-        style="@style/DefaultSolid"
         android:layout_width="308dp"
         android:layout_height="58dp"
         android:layout_marginStart="50dp"

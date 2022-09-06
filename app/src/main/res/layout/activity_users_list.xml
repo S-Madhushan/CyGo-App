@@ -176,7 +176,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnName5"
-        style="@style/DefaultSolid"
         android:layout_width="192dp"
         android:layout_height="53dp"
         android:layout_marginStart="4dp"
@@ -193,7 +192,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnName4"
-        style="@style/DefaultSolid"
         android:layout_width="191dp"
         android:layout_height="54dp"
         android:layout_marginStart="5dp"
@@ -274,7 +272,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnName1"
-        style="@style/DefaultSolid"
         android:layout_width="191dp"
         android:layout_height="55dp"
         android:layout_marginStart="2dp"
@@ -291,7 +288,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnName2"
-        style="@style/DefaultSolid"
         android:layout_width="192dp"
         android:layout_height="56dp"
         android:layout_marginStart="4dp"
@@ -308,7 +304,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnName3"
-        style="@style/DefaultSolid"
         android:layout_width="193dp"
         android:layout_height="56dp"
         android:layout_marginStart="4dp"
@@ -325,7 +320,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSort"
-        style="@style/DefaultSolid"
         android:layout_width="76dp"
         android:layout_height="41dp"
         android:layout_marginStart="92dp"

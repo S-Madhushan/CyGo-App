@@ -8,7 +8,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnDrivewithCyGoins"
-        style="@style/DefaultSolid"
         android:layout_width="0dp"
         android:layout_height="71dp"
         android:layout_marginStart="50dp"
@@ -24,7 +23,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGowithCyGoins"
-        style="@style/DefaultSolid"
         android:layout_width="0dp"
         android:layout_height="71dp"
         android:layout_marginStart="50dp"

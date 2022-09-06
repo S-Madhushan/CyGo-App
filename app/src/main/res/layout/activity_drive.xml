@@ -8,7 +8,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/txtDestination"
-        style="@style/DefaultSolid"
         android:layout_width="289dp"
         android:layout_height="58dp"
         android:layout_marginStart="52dp"
@@ -26,7 +25,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/txtTrip_Start"
-        style="@style/DefaultSolid"
         android:layout_width="289dp"
         android:layout_height="58dp"
         android:layout_marginStart="64dp"
@@ -46,7 +44,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/txtTrip_End"
-        style="@style/DefaultSolid"
         android:layout_width="289dp"
         android:layout_height="58dp"
         android:layout_marginStart="64dp"
@@ -78,7 +75,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnConfirm"
-        style="@style/DefaultSolid"
         android:layout_width="0dp"
         android:layout_height="71dp"
         android:layout_marginStart="50dp"

@@ -8,7 +8,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnTripStart2"
-        style="@style/DefaultSolid"
         android:layout_width="223dp"
         android:layout_height="53dp"
         android:layout_marginStart="15dp"
@@ -27,7 +26,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnEmergency"
-        style="@style/DefaultSolid"
         android:layout_width="223dp"
         android:layout_height="53dp"
         android:layout_marginStart="15dp"
@@ -46,7 +44,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnHelp"
-        style="@style/DefaultSolid"
         android:layout_width="223dp"
         android:layout_height="53dp"
         android:layout_marginStart="14dp"
@@ -65,7 +62,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnFeedback"
-        style="@style/DefaultSolid"
         android:layout_width="223dp"
         android:layout_height="53dp"
         android:layout_marginStart="14dp"
@@ -84,7 +80,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAboutUs"
-        style="@style/DefaultSolid"
         android:layout_width="223dp"
         android:layout_height="53dp"
         android:layout_marginStart="14dp"
