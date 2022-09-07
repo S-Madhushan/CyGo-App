@@ -28,6 +28,9 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class activity_sign_up extends AppCompatActivity {
 
     private EditText txtName, txtContact,txtEmail,txtPassword, txtConfirmPassword,txtNIC;
@@ -63,6 +66,11 @@ public class activity_sign_up extends AppCompatActivity {
                 String cpwd = txtConfirmPassword.getText().toString();
                 String nic = txtNIC.getText().toString();
 
+                String contactRegex = "[0][0-9]{9}";
+                Matcher contactMatcher;
+                Pattern contactPattern = Pattern.compile(contactRegex);
+                contactMatcher = contactPattern.matcher(contact);
+
                 if (TextUtils.isEmpty(name)){
                     Toast.makeText(activity_sign_up.this, "Enter Full Name",Toast.LENGTH_LONG).show();
                     txtName.setError("Full Name is Required");
@@ -72,6 +80,10 @@ public class activity_sign_up extends AppCompatActivity {
                     txtContact.setError("Contact is Required");
                     txtContact.requestFocus();
                 }else if (contact.length() != 10){
+                    Toast.makeText(activity_sign_up.this, "Re-enter Contact",Toast.LENGTH_LONG).show();
+                    txtContact.setError("Valid Contact is Required");
+                    txtContact.requestFocus();
+                }else if (!contactMatcher.find()){
                     Toast.makeText(activity_sign_up.this, "Re-enter Contact",Toast.LENGTH_LONG).show();
                     txtContact.setError("Valid Contact is Required");
                     txtContact.requestFocus();
