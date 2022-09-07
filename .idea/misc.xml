@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/drawable/button_login.xml" value="0.1" />
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/drawable/cygo.xml" value="0.158" />
+        <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/drawable/rounded_edittext.xml" value="0.158" />
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/drawable/welcome_everyone.xml" value="0.158" />
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_drive.xml" value="0.22" />
@@ -14,10 +17,11 @@
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_login.xml" value="0.209375" />
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_main.xml" value="0.18" />
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_select_user.xml" value="0.1875" />
-        <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_sign_in.xml" value="0.22" />
-        <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_sign_up.xml" value="0.209375" />
+        <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_sign_in.xml" value="0.25" />
+        <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_sign_up2.xml" value="0.2" />
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_signin.xml" value="0.18645833333333334" />
+        <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_signup.xml" value="0.20833333333333334" />
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_user.xml" value="0.22" />
         <entry key="..\:/Final Project HDSE/CyGo-App/app/src/main/res/layout/activity_users_list.xml" value="0.25" />
         <entry key="..\:/Users/S.MADHUSHAN/AndroidStudioProjects/CyGoApp/app/src/main/res/layout/activity_dashboard.xml" value="0.25" />

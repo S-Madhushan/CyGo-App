@@ -15,7 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-public class MainActivity extends AppCompatActivity {
+public class activity_main extends AppCompatActivity {
     String prevStarted = "yes";
     private static int SPLASH_SCREEN = 3000;
 
@@ -46,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(MainActivity.this,activity_getStart.class);
+                    Intent intent = new Intent(activity_main.this,activity_getStart.class);
                     Pair[] pairs = new Pair[1];
                     pairs[0] = new Pair<View,String>(cygo,"logo");
 
-                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this,pairs);
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(activity_main.this,pairs);
                     startActivity(intent,options.toBundle());
                     finish();
                 }
@@ -66,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(MainActivity.this,activity_sign_in.class);
+                    Intent intent = new Intent(activity_main.this,activity_sign_in.class);
                     Pair[] pairs = new Pair[1];
                     pairs[0] = new Pair<View,String>(cygo,"logo");
 
-                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this,pairs);
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(activity_main.this,pairs);
                     startActivity(intent,options.toBundle());
                     finish();
                 }
