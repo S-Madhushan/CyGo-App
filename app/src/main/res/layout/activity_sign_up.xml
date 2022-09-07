@@ -113,6 +113,7 @@
         android:textSize="12sp"/>
 
     <EditText
+        android:id="@+id/txtNIC"
         android:layout_width="310dp"
         android:layout_height="46dp"
         android:layout_marginStart="45dp"
@@ -168,4 +169,13 @@
         android:textSize="13sp"
         android:background="?attr/selectableItemBackgroundBorderless"/>
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_marginStart="180dp"
+        android:layout_marginTop="-300dp"
+        android:layout_marginEnd="0dp"
+        android:elevation="10dp"
+        android:visibility="gone"/>
 </LinearLayout>
