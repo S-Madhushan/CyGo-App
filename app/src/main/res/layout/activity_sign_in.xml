@@ -47,7 +47,7 @@
         android:transitionName="logo" />
 
     <EditText
-        android:id="@+id/txtSigninEmail"
+        android:id="@+id/txtEmail"
         android:layout_width="310dp"
         android:layout_height="45dp"
         android:layout_marginStart="45dp"
@@ -92,7 +92,7 @@
 
 
     <Button
-        android:id="@+id/lblForgotPass"
+        android:id="@+id/btnForgotPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="120dp"
@@ -131,8 +131,8 @@
         android:id="@+id/btnsignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="245dp"
-        android:layout_marginTop="-35dp"
+        android:layout_marginStart="255dp"
+        android:layout_marginTop="-40dp"
         android:layout_marginEnd="0dp"
         android:fontFamily="@font/poppins_regular"
         android:text="Sign Up"
@@ -152,5 +152,15 @@
         android:text="Read Terms and Conditions"
         android:textSize="12sp"
         android:background="?attr/selectableItemBackgroundBorderless"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="-350dp"
+        android:layout_marginEnd="80dp"
+        style="?android:attr/progressBarStyleLarge"
+        android:visibility="gone" />
 
 </LinearLayout>
