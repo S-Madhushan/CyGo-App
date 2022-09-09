@@ -108,7 +108,25 @@ public class activity_sign_in extends AppCompatActivity {
     }
 
     private void resetPwd(String email) {
-
+        authProfile = FirebaseAuth.getInstance();
+        authProfile.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(activity_sign_in.this, "Reset Password Link Sent!", Toast.LENGTH_LONG).show();
+                }else{
+                    try{
+                        throw task.getException();
+                    }catch(FirebaseAuthInvalidUserException e){
+                        txtEmail.setError("User doesn't exist");
+                    }catch(Exception e){
+                        Log.e(TAG, e.getMessage());
+                        Toast.makeText(activity_sign_in.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                    Toast.makeText(activity_sign_in.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     private void loginUser(String email, String pwd) {
