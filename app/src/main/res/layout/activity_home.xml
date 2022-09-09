@@ -1,105 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity_home">
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnDrivewithCyGoins"
-        android:layout_width="0dp"
-        android:layout_height="71dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="50dp"
-        android:text="Drive with CyGoins"
-        android:textColor="@color/black"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgHowugo" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnGowithCyGoins"
-        android:layout_width="0dp"
-        android:layout_height="71dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="17dp"
-        android:layout_marginEnd="50dp"
-        android:text="Go with CyGoins"
-        android:textColor="@color/black"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView11" />
+    tools:context=".activity_home"
+    android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/imgHowugo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView17"
-        app:srcCompat="@drawable/how_you_go_today_" />
-
-    <ImageView
-        android:id="@+id/imageView11"
-        android:layout_width="25dp"
-        android:layout_height="22dp"
-        android:layout_marginStart="188dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginEnd="188dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnDrivewithCyGoins"
-        app:srcCompat="@drawable/or" />
+        android:id="@+id/imageView18"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="-10dp"
+        app:srcCompat="@drawable/shape" />
 
     <ImageView
         android:id="@+id/imageView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="-195dp"
         app:srcCompat="@drawable/background" />
 
     <ImageView
-        android:id="@+id/imageView18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/shape" />
-
-    <ImageView
         android:id="@+id/imgUserAcc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="116dp"
+        android:layout_width="119dp"
+        android:layout_height="121dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-180dp"
         android:layout_marginEnd="100dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.136"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView18"
         app:srcCompat="@drawable/user_acc" />
 
     <TextView
-        android:id="@+id/txtNote"
-        android:layout_width="wrap_content"
+        android:id="@+id/txtName"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="-100dp"
         android:layout_marginEnd="100dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="Good Morning!"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.222"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView18" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:text=""
+        android:textSize="20sp" />
+
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="246dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="0dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:progressBackgroundTint="@color/primary_color"
+            android:progressTint="#FFDA23"/>
+
+
+            <TextView
+                android:id="@+id/txtNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="100dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text=""
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@+id/imageView18" />
+
+
+                <Button
+                    android:id="@+id/btnDrivewithCyGoins"
+                    android:layout_width="180dp"
+                    android:layout_height="71dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="50dp"
+                    android:text="Drive CyGoins"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:backgroundTint="@color/Secondary_color"
+                  />
+
+                <Button
+                    android:id="@+id/btnGowithCyGoins"
+                    android:layout_width="180dp"
+                    android:layout_height="71dp"
+                    android:layout_marginStart="200dp"
+                    android:layout_marginTop="-71dp"
+                    android:layout_marginEnd="50dp"
+                    android:text="Go with CyGoins"
+                    android:textColor="@color/black"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:backgroundTint="@color/Secondary_color"
+                    />
+
+                <Button
+                    android:id="@+id/BookedRides"
+                    android:layout_width="180dp"
+                    android:layout_height="71dp"
+                    android:layout_marginStart="105dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="50dp"
+                    android:text="Booked Rides"
+                    android:textColor="@color/black"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:backgroundTint="@color/primary_color"
+                    />
+
+                <Button
+                    android:id="@+id/OfferedRides"
+                    android:layout_width="180dp"
+                    android:layout_height="71dp"
+                    android:layout_marginStart="105dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="50dp"
+                    android:text="Offered Rides"
+                    android:textColor="@color/black"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:backgroundTint="@color/primary_color"
+                    />
+
+                 <Button
+                     android:id="@+id/settings"
+                     android:layout_width="280dp"
+                     android:layout_height="71dp"
+                     android:layout_marginStart="60dp"
+                     android:layout_marginTop="40dp"
+                     android:layout_marginEnd="50dp"
+                     android:text="Settings"
+                     android:textColor="@color/black"
+                     android:textAllCaps="false"
+                     android:textSize="16sp"
+                     android:backgroundTint="#e6b400"
+                     />
+
+                   <Button
+                       android:id="@+id/logout"
+                       android:layout_width="280dp"
+                       android:layout_height="71dp"
+                       android:layout_marginStart="60dp"
+                       android:layout_marginTop="0dp"
+                       android:layout_marginEnd="50dp"
+                       android:text="Logout"
+                       android:textColor="@color/white"
+                       android:textAllCaps="false"
+                       android:textSize="16sp"
+                       android:backgroundTint="@color/design_default_color_error"
+                       />
+
+                   <ProgressBar
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/progressBar"
+                       android:layout_marginStart="180dp"
+                       android:layout_marginTop="-300dp"
+                       android:layout_marginEnd="0dp"
+                       android:elevation="10dp"
+                       android:visibility="gone"/>
+
+
+</LinearLayout>

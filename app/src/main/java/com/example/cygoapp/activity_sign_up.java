@@ -11,13 +11,14 @@ import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.cygoapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -36,6 +37,7 @@ public class activity_sign_up extends AppCompatActivity {
     private EditText txtName, txtContact,txtEmail,txtPassword, txtConfirmPassword,txtNIC;
     private Button btnRegister,btnSignIn;
     private ProgressBar progressBar;
+    private CheckBox chkterms;
     private static final String TAG = "activity_sign_up";
 
     @Override
@@ -50,6 +52,7 @@ public class activity_sign_up extends AppCompatActivity {
         txtPassword=findViewById(R.id.txtPassword);
         txtConfirmPassword=findViewById(R.id.txtConfirmPassword);
         txtNIC=findViewById(R.id.txtNIC);
+        chkterms=findViewById(R.id.chkterms);
 
         progressBar=findViewById(R.id.progressBar);
 
@@ -95,6 +98,14 @@ public class activity_sign_up extends AppCompatActivity {
                     Toast.makeText(activity_sign_up.this, "Re-enter Email",Toast.LENGTH_LONG).show();
                     txtEmail.setError("Valid Email is Required");
                     txtEmail.requestFocus();
+                }else if (TextUtils.isEmpty(nic)){
+                    Toast.makeText(activity_sign_up.this, "Enter NIC",Toast.LENGTH_LONG).show();
+                    txtNIC.setError("NIC is Required");
+                    txtNIC.requestFocus();
+                }else if (nic.length() < 10 && nic.length() > 11){
+                    Toast.makeText(activity_sign_up.this, "Re-enter NIC",Toast.LENGTH_LONG).show();
+                    txtNIC.setError("Valid NIC is Required");
+                    txtNIC.requestFocus();
                 }else if(TextUtils.isEmpty(pwd)){
                     Toast.makeText(activity_sign_up.this, "Enter Password",Toast.LENGTH_LONG).show();
                     txtPassword.setError("Password is Required");
@@ -111,17 +122,13 @@ public class activity_sign_up extends AppCompatActivity {
                     Toast.makeText(activity_sign_up.this, "Enter Same Password",Toast.LENGTH_LONG).show();
                     txtConfirmPassword.setError("Same Password is Required");
                     txtConfirmPassword.requestFocus();
-                }else if (TextUtils.isEmpty(nic)){
-                    Toast.makeText(activity_sign_up.this, "Enter NIC",Toast.LENGTH_LONG).show();
-                    txtNIC.setError("NIC is Required");
-                    txtNIC.requestFocus();
-                }else if (nic.length() < 10 && nic.length() > 11){
-                    Toast.makeText(activity_sign_up.this, "Re-enter NIC",Toast.LENGTH_LONG).show();
-                    txtNIC.setError("Valid NIC is Required");
-                    txtNIC.requestFocus();
+                }else if(!chkterms.isChecked()){
+                    Toast.makeText(activity_sign_up.this, "Accept Terms and conditions",Toast.LENGTH_LONG).show();
+                    chkterms.setError("Accept Terms and conditions");
+                    chkterms.requestFocus();
                 }else{
-                   progressBar.setVisibility(View.VISIBLE);
-                   registerUser(name,contact,email,pwd,nic);
+                    progressBar.setVisibility(View.VISIBLE);
+                    registerUser(name,contact,email,pwd,nic);
                 }
 
             }
@@ -152,7 +159,7 @@ public class activity_sign_up extends AppCompatActivity {
                     UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
                     firebaseUser.updateProfile(profileChangeRequest);
 
-                    Customer customer = new Customer(name,contact,email,pwd,nic);
+                    User customer = new User(name,contact,email,nic);
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference mdatabase = database.getReference("customers");
@@ -160,23 +167,23 @@ public class activity_sign_up extends AppCompatActivity {
                     mdatabase.child(firebaseUser.getUid()).setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                           if(task.isSuccessful()){
-                               firebaseUser.sendEmailVerification();
+                            if(task.isSuccessful()){
+                                firebaseUser.sendEmailVerification();
 
-                               progressBar.setVisibility(View.GONE);
+                                progressBar.setVisibility(View.GONE);
 
-                               Toast.makeText(activity_sign_up.this, "User Registered. Please Verify your email",Toast.LENGTH_LONG).show();
+                                Toast.makeText(activity_sign_up.this, "User Registered. Please Verify your email",Toast.LENGTH_LONG).show();
 
-                               //Open User Profile after successful registration
-                               Intent intent = new Intent(activity_sign_up.this,activity_home.class);
-                               //to prevent coming back to sign up
-                               intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                //Open User Profile after successful registration
+                                Intent intent = new Intent(activity_sign_up.this,activity_home.class);
+                                //to prevent coming back to sign up
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                               startActivity(intent);
-                               finish();
-                           }else{
-                               Toast.makeText(activity_sign_up.this, "User Registration Failed. Please Try Again",Toast.LENGTH_LONG).show();
-                           }
+                                startActivity(intent);
+                                finish();
+                            }else{
+                                Toast.makeText(activity_sign_up.this, "User Registration Failed. Please Try Again",Toast.LENGTH_LONG).show();
+                            }
 
                             progressBar.setVisibility(View.GONE);
                         }
@@ -198,8 +205,8 @@ public class activity_sign_up extends AppCompatActivity {
                         txtEmail.requestFocus();
 
                     }catch(Exception e){
-                         Log.e(TAG, e.getMessage());
-                         Toast.makeText(activity_sign_up.this,e.getMessage(),Toast.LENGTH_LONG).show();
+                        Log.e(TAG, e.getMessage());
+                        Toast.makeText(activity_sign_up.this,e.getMessage(),Toast.LENGTH_LONG).show();
                     }
                     progressBar.setVisibility(View.GONE);
                 }

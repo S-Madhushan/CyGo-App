@@ -84,6 +84,31 @@ public class activity_sign_in extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btnForgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = txtEmail.getText().toString();
+                String pwd = txtPassword.getText().toString();
+
+                if(TextUtils.isEmpty(email)){
+                    Toast.makeText(activity_sign_in.this, "Enter Email to reset",Toast.LENGTH_LONG).show();
+                    txtEmail.setError("Email is Required");
+                    txtEmail.requestFocus();
+                }else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    Toast.makeText(activity_sign_in.this, "Re-enter Email", Toast.LENGTH_LONG).show();
+                    txtEmail.setError("Valid Email is Required");
+                    txtEmail.requestFocus();
+                }else{
+                    progressBar.setVisibility(View.VISIBLE);
+                    resetPwd(email);
+                }
+            }
+        });
+    }
+
+    private void resetPwd(String email) {
+
     }
 
     private void loginUser(String email, String pwd) {

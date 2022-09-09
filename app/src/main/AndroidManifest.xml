@@ -14,6 +14,14 @@
         android:theme="@style/Theme.CyGoApp"
         tools:targetApi="31">
         <activity
+            android:name=".activity_user_details"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCyncao4uXc6y6XJnGnc1-08ld7s8Bslk8" />
+
+        <activity
             android:name=".activity_endTrip"
             android:exported="false" />
         <activity
@@ -38,19 +46,10 @@
             android:name=".activity_sign_in"
             android:exported="false" />
         <activity
-            android:name=".activity_signUp"
-            android:exported="false" />
-        <activity
-            android:name=".activity_getStart"
-            android:exported="false" />
-        <activity
             android:name=".activity_sign_up"
             android:exported="false" />
         <activity
-            android:name=".activity_login"
-            android:exported="false" />
-        <activity
-            android:name=".Dashboard"
+            android:name=".activity_getStart"
             android:exported="false" />
         <activity
             android:name=".activity_main"

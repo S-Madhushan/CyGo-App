@@ -131,27 +131,14 @@
         android:id="@+id/btnsignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="255dp"
-        android:layout_marginTop="-40dp"
+        android:layout_marginStart="253dp"
+        android:layout_marginTop="-36dp"
         android:layout_marginEnd="0dp"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/poppins_bold"
         android:text="Sign Up"
         android:textColor="@color/primary_color"
         android:background="?attr/selectableItemBackgroundBorderless"/>
 
-
-    <Button
-        android:id="@+id/btnterms"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="80dp"
-        android:fontFamily="@font/poppins_bold"
-        android:textColor="#636363"
-        android:text="Read Terms and Conditions"
-        android:textSize="12sp"
-        android:background="?attr/selectableItemBackgroundBorderless"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
