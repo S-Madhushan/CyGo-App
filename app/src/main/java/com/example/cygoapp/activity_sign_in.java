@@ -113,6 +113,7 @@ public class activity_sign_in extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(activity_sign_in.this, "Reset Password Link Sent!", Toast.LENGTH_LONG).show();
                 }else{
                     try{
@@ -123,8 +124,8 @@ public class activity_sign_in extends AppCompatActivity {
                         Log.e(TAG, e.getMessage());
                         Toast.makeText(activity_sign_in.this, e.getMessage(), Toast.LENGTH_LONG).show();
                     }
-                    Toast.makeText(activity_sign_in.this, "Something went wrong", Toast.LENGTH_LONG).show();
                 }
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -134,7 +135,6 @@ public class activity_sign_in extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(activity_sign_in.this, "Successfully Signed In",Toast.LENGTH_LONG).show();
 
                     FirebaseUser firebaseUser = authProfile.getCurrentUser();
 
@@ -195,12 +195,9 @@ public class activity_sign_in extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         if(authProfile.getCurrentUser() != null){
-            Toast.makeText(activity_sign_in.this, "Already Signed In",Toast.LENGTH_LONG).show();
-
             startActivity(new Intent(activity_sign_in.this, activity_home.class));
             finish();
         }else{
-            Toast.makeText(activity_sign_in.this, "Sign In Now",Toast.LENGTH_LONG).show();
 
         }
     }
