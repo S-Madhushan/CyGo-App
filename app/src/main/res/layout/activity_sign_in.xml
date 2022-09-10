@@ -126,17 +126,17 @@
         android:id="@+id/textAccSignup2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="75dp"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/poppins_regular"
-        android:text="Already have an account?" />
+        android:text="Don't have an account?" />
 
 
     <Button
         android:id="@+id/btnsignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="253dp"
+        android:layout_marginStart="238dp"
         android:layout_marginTop="-36dp"
         android:layout_marginEnd="0dp"
         android:fontFamily="@font/poppins_bold"
