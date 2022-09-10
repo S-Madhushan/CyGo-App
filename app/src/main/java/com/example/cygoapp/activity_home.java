@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class activity_home extends AppCompatActivity {
 
@@ -41,7 +43,7 @@ public class activity_home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        profileImage=findViewById(R.id.profileImage);
+        profileImage=findViewById(R.id.imgUserAcc);
         txtName=findViewById(R.id.txtName);
         txtGreeting=findViewById(R.id.txtNote);
         ratingBar=findViewById(R.id.ratingBar);
@@ -59,6 +61,10 @@ public class activity_home extends AppCompatActivity {
         if(firebaseUser == null){
             Toast.makeText(activity_home.this, "Something went wrong",Toast.LENGTH_LONG).show();
         }else{
+            Uri uri = firebaseUser.getPhotoUrl();
+            if(uri != null) {
+                Picasso.get().load(uri).into(profileImage);
+            }
             checkEmailVerified(firebaseUser);
             progressBar.setVisibility(View.VISIBLE);
             showUserDetails(firebaseUser);
@@ -74,6 +80,13 @@ public class activity_home extends AppCompatActivity {
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(activity_home.this,activity_user_details.class));
             }
         });
     }
