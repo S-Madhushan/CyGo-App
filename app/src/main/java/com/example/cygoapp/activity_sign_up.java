@@ -159,7 +159,7 @@ public class activity_sign_up extends AppCompatActivity {
                     UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
                     firebaseUser.updateProfile(profileChangeRequest);
 
-                    User customer = new User(name,contact,email,nic);
+                    User customer = new User(firebaseUser.getUid(),name,contact,email,nic,"null",null,false,0,0);
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference mdatabase = database.getReference("customers");
