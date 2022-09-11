@@ -174,8 +174,10 @@ public class activity_sign_up extends AppCompatActivity {
 
                                 Toast.makeText(activity_sign_up.this, "User Registered. Please Verify your email",Toast.LENGTH_LONG).show();
 
+                                auth.signOut();
+
                                 //Open User Profile after successful registration
-                                Intent intent = new Intent(activity_sign_up.this,activity_home.class);
+                                Intent intent = new Intent(activity_sign_up.this,activity_sign_in.class);
                                 //to prevent coming back to sign up
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 

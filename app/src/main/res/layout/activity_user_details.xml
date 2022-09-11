@@ -6,15 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".activity_user_details"
     android:background="@color/white">
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-    
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
             android:background="@color/Secondary_color">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -42,16 +42,140 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="15dp"
-            android:layout_margin="15dp"
+            android:layout_margin="0dp"
             >
+
+            <EditText
+                android:id="@+id/txtName"
+                android:layout_width="310dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/rounded_edittext"
+                android:ems="10"
+                android:fontFamily="@font/poppins_regular"
+                android:foregroundTint="#1DE099"
+                android:hint="Enter Name"
+                android:inputType="textPersonName"
+                android:paddingLeft="10dp"
+                android:textAlignment="textStart"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/txtContact"
+                android:layout_width="310dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/rounded_edittext"
+                android:ems="10"
+                android:paddingLeft="10dp"
+                android:fontFamily="@font/poppins_regular"
+                android:foregroundTint="#1DE099"
+                android:hint="Enter Contact Number"
+                android:inputType="phone"
+                android:textAlignment="textStart"
+                android:textSize="12sp" />
+
+            <Button
+                android:layout_width="200dp"
+                android:layout_marginStart="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnSave"
+                android:backgroundTint="@color/primary_color"
+                android:layout_marginTop="103dp"
+                android:text="Save"/>
+
+            <EditText
+                android:id="@+id/txtEmail"
+                android:layout_width="310dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="165dp"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/rounded_edittext"
+                android:ems="10"
+                android:fontFamily="@font/poppins_regular"
+                android:foregroundTint="#1DE099"
+                android:hint="Enter Email"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="10dp"
+                android:textAlignment="textStart"
+                android:textSize="12sp" />
+
+
+            <Button
+                android:layout_width="200dp"
+                android:layout_marginStart="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnChgEmail"
+                android:backgroundTint="@color/primary_color"
+                android:layout_marginTop="218dp"
+                android:text="Change Email"/>
+
+
+            <EditText
+                android:id="@+id/txtPassword"
+                android:layout_width="310dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="280dp"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/rounded_edittext"
+                android:ems="10"
+                android:fontFamily="@font/poppins_regular"
+                android:foregroundTint="#1DE099"
+                android:hint="Enter Password"
+                android:inputType="textPassword"
+                android:paddingLeft="10dp"
+                android:textAlignment="textStart"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/txtConfirmPassword"
+                android:layout_width="310dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="330dp"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/rounded_edittext"
+                android:ems="10"
+                android:fontFamily="@font/poppins_regular"
+                android:foregroundTint="#1DE099"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:paddingLeft="10dp"
+                android:textAlignment="textStart"
+                android:textSize="12sp" />
+
+            <Button
+                android:layout_width="200dp"
+                android:layout_marginStart="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnChgPass"
+                android:backgroundTint="@color/primary_color"
+                android:layout_marginTop="383dp"
+                android:text="Change Password"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/btnSave"
+                android:id="@+id/btnBack"
                 android:backgroundTint="@color/primary_color"
-                android:text="Save"/>
+                android:layout_marginTop="450dp"
+                android:text="Back"/>
 
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressBar"
+                android:layout_marginStart="170dp"
+                android:layout_marginTop="150dp"
+                android:elevation="10dp"
+                android:visibility="gone"/>
         </RelativeLayout>
     </LinearLayout>
+
 </ScrollView>

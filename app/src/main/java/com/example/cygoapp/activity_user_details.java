@@ -14,6 +14,8 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,12 +26,21 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.label.ImageLabel;
+import com.google.mlkit.vision.label.ImageLabeler;
+import com.google.mlkit.vision.label.ImageLabeling;
+import com.google.mlkit.vision.label.defaults.ImageLabelerOptions;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.util.List;
 
 public class activity_user_details extends AppCompatActivity {
 
     private ImageView profileImage,editImage;
     private Button btnSave;
+    private ProgressBar progressBar;
     private FirebaseAuth authProfile;
     private StorageReference storageReference;
     private FirebaseUser firebaseUser;
@@ -46,6 +57,8 @@ public class activity_user_details extends AppCompatActivity {
         editImage = findViewById(R.id.editImage);
 
         btnSave = findViewById(R.id.btnSave);
+
+        progressBar = findViewById(R.id.progressBar);
 
         authProfile = FirebaseAuth.getInstance();
         firebaseUser = authProfile.getCurrentUser();
@@ -133,9 +146,55 @@ public class activity_user_details extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
+
+            progressBar.setVisibility(View.VISIBLE);
+
             uriImage = data.getData();
-            profileImage.setImageURI(uriImage);
-            uploadPicFirebase();
+
+            InputImage img;
+
+            try {
+                img = InputImage.fromFilePath(activity_user_details.this, uriImage);
+                ImageLabeler labeler = ImageLabeling.getClient(ImageLabelerOptions.DEFAULT_OPTIONS);
+
+                labeler.process(img)
+                        .addOnSuccessListener(new OnSuccessListener<List<ImageLabel>>() {
+                            @Override
+                            public void onSuccess(List<ImageLabel> labels) {
+                                int found=0;
+
+                                for (ImageLabel label : labels) {
+                                    String text = label.getText();
+                                    float confidence = label.getConfidence();
+                                    int index = label.getIndex();
+
+                                    if(text.equals("Smile") && confidence>0.5){
+                                        found=1;
+                                        profileImage.setImageURI(uriImage);
+                                        uploadPicFirebase();
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                }
+
+                                if(found==0){
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(activity_user_details.this, "Upload a image of you with clear face and smile", Toast.LENGTH_LONG).show();
+                                }
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(activity_user_details.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(activity_user_details.this, "Error", Toast.LENGTH_LONG).show();
+            }
+
         }
     }
 
