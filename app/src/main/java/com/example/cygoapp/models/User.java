@@ -31,6 +31,19 @@ public class User {
         this.nic = nic;
     }
 
+    public User(String uid, String name, String contact, String email,  String nic, String imgUri, boolean profileCreated, float rating, int ratingAmount) {
+        this.uid = uid;
+        this.name = name;
+        this.contact = contact;
+        this.email = email;
+        this.nic = nic;
+        this.imgUri = imgUri;
+        this.profileCreated = profileCreated;
+        this.rating = rating;
+        this.ratingAmount = ratingAmount;
+    }
+
+
     public User(String uid, String name, String contact, String email,  String nic, String imgUri, List<String> bookedRides,boolean profileCreated, float rating, int ratingAmount) {
         this.uid = uid;
         this.name = name;

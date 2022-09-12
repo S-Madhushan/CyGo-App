@@ -8,21 +8,31 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cygoapp.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -35,11 +45,14 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class activity_user_details extends AppCompatActivity {
 
     private ImageView profileImage,editImage;
-    private Button btnSave;
+    private Button btnBack,btnSave,btnChgEmail,btnChgPass;
+    private EditText txtName,txtContact,txtEmail,txtPassword,txtConfirmPassword;
     private ProgressBar progressBar;
     private FirebaseAuth authProfile;
     private StorageReference storageReference;
@@ -56,7 +69,16 @@ public class activity_user_details extends AppCompatActivity {
         profileImage = findViewById(R.id.profileImage);
         editImage = findViewById(R.id.editImage);
 
+        btnBack = findViewById(R.id.btnBack);
         btnSave = findViewById(R.id.btnSave);
+        btnChgEmail = findViewById(R.id.btnChgEmail);
+        btnChgPass = findViewById(R.id.btnChgPass);
+
+        txtName = findViewById(R.id.txtName);
+        txtContact = findViewById(R.id.txtContact);
+        txtEmail = findViewById(R.id.txtEmail);
+        txtPassword = findViewById(R.id.txtPassword);
+        txtConfirmPassword = findViewById(R.id.txtConfirmPassword);
 
         progressBar = findViewById(R.id.progressBar);
 
@@ -66,6 +88,8 @@ public class activity_user_details extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference("CustomerProPics");
 
         Uri uri = firebaseUser.getPhotoUrl();
+
+        showProfile(firebaseUser);
 
         if(uri == null) {
             profileImage.setOnClickListener(new View.OnClickListener() {
@@ -128,8 +152,42 @@ public class activity_user_details extends AppCompatActivity {
         }
 
 
-
         btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = txtName.getText().toString();
+                String contact = txtContact.getText().toString();
+
+                String contactRegex = "[0][0-9]{9}";
+                Matcher contactMatcher;
+                Pattern contactPattern = Pattern.compile(contactRegex);
+                contactMatcher = contactPattern.matcher(contact);
+
+                if (TextUtils.isEmpty(name)){
+                    Toast.makeText(activity_user_details.this, "Enter Full Name",Toast.LENGTH_LONG).show();
+                    txtName.setError("Full Name is Required");
+                    txtName.requestFocus();
+                }else if (TextUtils.isEmpty(contact)){
+                    Toast.makeText(activity_user_details.this, "Enter Contact",Toast.LENGTH_LONG).show();
+                    txtContact.setError("Contact is Required");
+                    txtContact.requestFocus();
+                }else if (contact.length() != 10){
+                    Toast.makeText(activity_user_details.this, "Re-enter Contact",Toast.LENGTH_LONG).show();
+                    txtContact.setError("Valid Contact is Required");
+                    txtContact.requestFocus();
+                }else if (!contactMatcher.find()){
+                    Toast.makeText(activity_user_details.this, "Re-enter Contact",Toast.LENGTH_LONG).show();
+                    txtContact.setError("Valid Contact is Required");
+                    txtContact.requestFocus();
+                }else{
+                    updateInfo(firebaseUser);
+                }
+
+
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity_user_details.this,activity_home.class);
@@ -139,6 +197,73 @@ public class activity_user_details extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void updateInfo(FirebaseUser firebaseUser) {
+
+        String name = txtName.getText().toString();
+        String contact = txtContact.getText().toString();
+
+        String userId = firebaseUser.getUid();
+
+        DatabaseReference refProfile = FirebaseDatabase.getInstance().getReference("customers").child(userId);
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        refProfile.child("name").setValue(name).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    refProfile.child("contact").setValue(contact).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                UserProfileChangeRequest updateName = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+                                firebaseUser.updateProfile(updateName);
+
+                                Toast.makeText(activity_user_details.this,"Updated",Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(activity_user_details.this,"Error",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }else{
+                    Toast.makeText(activity_user_details.this,"Error",Toast.LENGTH_LONG).show();
+                }
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+
+    }
+
+    private void showProfile(FirebaseUser firebaseUser) {
+        String userid = firebaseUser.getUid();
+
+        DatabaseReference refProfile = FirebaseDatabase.getInstance().getReference("customers");
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        refProfile.child(userid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+
+                if(user != null){
+                    txtName.setText(firebaseUser.getDisplayName());
+                    txtContact.setText(user.getContact());
+                    txtEmail.setText(firebaseUser.getEmail());
+                }else{
+                    Toast.makeText(activity_user_details.this,"Something went wrong",Toast.LENGTH_LONG).show();
+                }
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(activity_user_details.this,"Something went wrong",Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
@@ -170,8 +295,7 @@ public class activity_user_details extends AppCompatActivity {
 
                                     if(text.equals("Smile") && confidence>0.5){
                                         found=1;
-                                        profileImage.setImageURI(uriImage);
-                                        uploadPicFirebase();
+                                        uploadPicFirebase(uriImage);
                                         progressBar.setVisibility(View.GONE);
                                     }
                                 }
@@ -198,9 +322,10 @@ public class activity_user_details extends AppCompatActivity {
         }
     }
 
-    private void uploadPicFirebase() {
+    private void uploadPicFirebase(Uri uriImage) {
         if(uriImage != null){
             StorageReference fileReference = storageReference.child(authProfile.getCurrentUser().getUid() + "." + getFileExt(uriImage));
+            DatabaseReference refProfile = FirebaseDatabase.getInstance().getReference("customers").child(authProfile.getCurrentUser().getUid());
 
             fileReference.putFile(uriImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -208,7 +333,13 @@ public class activity_user_details extends AppCompatActivity {
                     fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
+                            profileImage.setImageURI(uriImage);
+
                             Uri downloadUri = uri;
+
+                            refProfile.child("imgUri").setValue(downloadUri.toString());
+                            refProfile.child("profileCreated").setValue(true);
+
                             firebaseUser = authProfile.getCurrentUser();
 
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setPhotoUri(downloadUri).build();
