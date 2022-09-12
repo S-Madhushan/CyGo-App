@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
-public class activity_getStart extends AppCompatActivity {
+public class activity_get_start extends AppCompatActivity {
 
     Button btnGetStart;
 
@@ -23,7 +23,7 @@ public class activity_getStart extends AppCompatActivity {
         btnGetStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity_getStart.this, activity_sign_up.class);
+                Intent intent = new Intent(activity_get_start.this, activity_sign_up.class);
                 startActivity(intent);
                 finish();
             }

@@ -46,7 +46,7 @@ public class activity_main extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(activity_main.this,activity_getStart.class);
+                    Intent intent = new Intent(activity_main.this, activity_get_start.class);
                     Pair[] pairs = new Pair[1];
                     pairs[0] = new Pair<View,String>(cygo,"logo");
 

@@ -30,22 +30,22 @@
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="ica" /> <!-- To use multiple models: android:value="ica,model2,model3" -->
         <activity
-            android:name=".activity_endTrip"
+            android:name=".activity_drive"
             android:exported="false" />
         <activity
             android:name=".activity_select_user"
             android:exported="false" />
         <activity
-            android:name=".activity_Users_list"
+            android:name=".activity_booked_rides"
             android:exported="false" />
         <activity
             android:name=".activity_user"
             android:exported="false" />
         <activity
-            android:name=".activity_drive"
+            android:name=".activity_offered_rides"
             android:exported="false" />
         <activity
-            android:name=".activity_Go"
+            android:name=".activity_go"
             android:exported="false" />
         <activity
             android:name=".activity_home"
@@ -57,7 +57,7 @@
             android:name=".activity_sign_up"
             android:exported="false" />
         <activity
-            android:name=".activity_getStart"
+            android:name=".activity_get_start"
             android:exported="false" />
         <activity
             android:name=".activity_main"
