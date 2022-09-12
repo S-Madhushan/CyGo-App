@@ -14,19 +14,21 @@
         android:theme="@style/Theme.CyGoApp"
         tools:targetApi="31">
         <activity
+            android:name=".activity_change_password"
+            android:exported="false" />
+        <activity
+            android:name=".activity_change_email"
+            android:exported="false" />
+        <activity
             android:name=".activity_user_details"
             android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCyncao4uXc6y6XJnGnc1-08ld7s8Bslk8" />
-
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
-            android:value="ica" />
-        <!-- To use multiple models: android:value="ica,model2,model3" -->
-
-
+            android:value="ica" /> <!-- To use multiple models: android:value="ica,model2,model3" -->
         <activity
             android:name=".activity_endTrip"
             android:exported="false" />

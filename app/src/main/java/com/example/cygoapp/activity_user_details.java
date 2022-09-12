@@ -52,7 +52,7 @@ public class activity_user_details extends AppCompatActivity {
 
     private ImageView profileImage,editImage;
     private Button btnBack,btnSave,btnChgEmail,btnChgPass;
-    private EditText txtName,txtContact,txtEmail,txtPassword,txtConfirmPassword;
+    private EditText txtName,txtContact;
     private ProgressBar progressBar;
     private FirebaseAuth authProfile;
     private StorageReference storageReference;
@@ -76,9 +76,6 @@ public class activity_user_details extends AppCompatActivity {
 
         txtName = findViewById(R.id.txtName);
         txtContact = findViewById(R.id.txtContact);
-        txtEmail = findViewById(R.id.txtEmail);
-        txtPassword = findViewById(R.id.txtPassword);
-        txtConfirmPassword = findViewById(R.id.txtConfirmPassword);
 
         progressBar = findViewById(R.id.progressBar);
 
@@ -184,6 +181,22 @@ public class activity_user_details extends AppCompatActivity {
             }
         });
 
+        btnChgEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity_user_details.this,activity_change_email.class);
+                startActivity(intent);
+            }
+        });
+
+        btnChgPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity_user_details.this,activity_change_password.class);
+                startActivity(intent);
+            }
+        });
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -248,7 +261,6 @@ public class activity_user_details extends AppCompatActivity {
                 if(user != null){
                     txtName.setText(firebaseUser.getDisplayName());
                     txtContact.setText(user.getContact());
-                    txtEmail.setText(firebaseUser.getEmail());
                 }else{
                     Toast.makeText(activity_user_details.this,"Something went wrong",Toast.LENGTH_LONG).show();
                 }
