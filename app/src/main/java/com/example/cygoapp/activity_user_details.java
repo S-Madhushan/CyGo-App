@@ -137,9 +137,6 @@ public class activity_user_details extends AppCompatActivity {
                                     intent.setAction(Intent.ACTION_GET_CONTENT);
                                     startActivityForResult(intent, PICK_IMAGE_REQUEST);
                                     return true;
-                                case R.id.remImg:
-                                    Toast.makeText(activity_user_details.this, "Remove Image", Toast.LENGTH_LONG).show();
-                                    return true;
                                 default:
                                     return false;
                             }
