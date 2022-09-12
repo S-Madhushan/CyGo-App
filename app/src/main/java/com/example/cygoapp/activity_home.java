@@ -60,6 +60,11 @@ public class activity_home extends AppCompatActivity {
 
         if(firebaseUser == null){
             Toast.makeText(activity_home.this, "Something went wrong",Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(activity_home.this,activity_sign_in.class);
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         }else{
             Uri uri = firebaseUser.getPhotoUrl();
             if(uri != null) {
