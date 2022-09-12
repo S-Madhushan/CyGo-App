@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".activity_change_email">
 
-    <EditText
+   <!-- <EditText
         android:id="@+id/txtEmail"
         android:layout_width="310dp"
         android:layout_height="46dp"
@@ -75,6 +75,6 @@
         android:id="@+id/btnChgPass"
         android:backgroundTint="@color/primary_color"
         android:layout_marginTop="383dp"
-        android:text="Change Password"/>
+        android:text="Change Password"/> -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
