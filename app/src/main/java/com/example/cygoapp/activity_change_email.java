@@ -68,7 +68,10 @@ public class activity_change_email extends AppCompatActivity {
         lblEmail.setText(oldEmail);
 
         if(firebaseUser.equals("")){
-            Toast.makeText(activity_change_email.this,"Something went wrong", Toast.LENGTH_LONG);
+            Toast.makeText(activity_change_email.this,"Something went wrong", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(activity_change_email.this,activity_user_details.class);
+            startActivity(intent);
+            finish();
         }else{
             reAuthenticate(firebaseUser);
         }
