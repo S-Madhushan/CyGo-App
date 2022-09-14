@@ -31,6 +31,7 @@ import com.squareup.picasso.Picasso;
 public class activity_home extends AppCompatActivity {
 
     String name;
+    boolean complete;
     ImageView profileImage;
     TextView txtName, txtGreeting;
     RatingBar ratingBar;
@@ -48,9 +49,13 @@ public class activity_home extends AppCompatActivity {
         txtGreeting=findViewById(R.id.txtNote);
         ratingBar=findViewById(R.id.ratingBar);
         btnDrive=findViewById(R.id.btnDrivewithCyGoins);
+        btnDrive.setEnabled(false);
         btnGo=findViewById(R.id.btnGowithCyGoins);
+        btnGo.setEnabled(false);
         btnBooked=findViewById(R.id.BookedRides);
+        btnBooked.setEnabled(false);
         btnRides=findViewById(R.id.OfferedRides);
+        btnRides.setEnabled(false);
         btnSettings=findViewById(R.id.settings);
         btnLogout=findViewById(R.id.logout);
         progressBar=findViewById(R.id.progressBar);
@@ -98,7 +103,28 @@ public class activity_home extends AppCompatActivity {
         btnDrive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               startActivity(new Intent(activity_home.this,activity_drive.class));
+                    startActivity(new Intent(activity_home.this,activity_drive.class));
+            }
+        });
+
+        btnGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    startActivity(new Intent(activity_home.this,activity_go.class));
+            }
+        });
+
+        btnBooked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        btnRides.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
     }
@@ -119,9 +145,22 @@ public class activity_home extends AppCompatActivity {
                 User user =  snapshot.getValue(User.class);
                 if(user != null ){
                     name = firebaseUser.getDisplayName();
-
                     txtName.setText(name);
-                    txtGreeting.setText("Hi "+name.split(" ")[0]+"!");
+                    complete = user.isProfileCreated();
+                    if(complete == true){
+                        btnDrive.setEnabled(true);
+                        btnGo.setEnabled(true);
+                        btnBooked.setEnabled(true);
+                        btnRides.setEnabled(true);
+                        txtGreeting.setText("Hi "+name.split(" ")[0]+"!");
+                    }else{
+                        btnDrive.setEnabled(false);
+                        btnGo.setEnabled(false);
+                        btnBooked.setEnabled(false);
+                        btnRides.setEnabled(false);
+                        txtGreeting.setText("Please Complete Your Profile in Settings");
+                    }
+
                 }
                 progressBar.setVisibility(View.GONE);
             }
