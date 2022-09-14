@@ -94,6 +94,13 @@ public class activity_home extends AppCompatActivity {
                 startActivity(new Intent(activity_home.this,activity_user_details.class));
             }
         });
+
+        btnDrive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               startActivity(new Intent(activity_home.this,activity_drive.class));
+            }
+        });
     }
 
     private void checkEmailVerified(FirebaseUser firebaseUser) {

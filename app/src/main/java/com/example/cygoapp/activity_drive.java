@@ -1,14 +1,528 @@
 package com.example.cygoapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Location;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
+import android.provider.Settings;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class activity_drive extends AppCompatActivity {
+import com.example.cygoapp.callbacks.SetRideTaskLoadedCallback;
+import com.example.cygoapp.helper.GeoCoderHelper;
+
+import com.example.cygoapp.models.Route;
+
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class activity_drive extends AppCompatActivity implements Serializable, OnMapReadyCallback, SetRideTaskLoadedCallback, View.OnClickListener, GoogleMap.OnPolylineClickListener {
+
+    private GoogleMap mMap;
+
+    //PlaceAutoComplete preferences
+    private static final String TAG = activity_drive.class.getSimpleName();
+    private ListView AutoCompleteStartpointListView, AutoCompleteDestinationListView;
+    private ArrayList<String> autoCompleteValues;
+    private ArrayAdapter<String> autoCompleteListAdapter;
+
+    //Address editors preferences
+    private EditText startEditor, destinationEditor, waypointEditor1, waypointEditor2;
+    private String strStart, strDestination, strWaypoint1, strWaypoint2;
+
+
+    Animation ttbAnim, bttAnim;
+    private LinearLayout linearContainer;
+    private ConstraintLayout routeDetails;
+    private Button drawerButton, nextBtn;
+    private ImageButton locationButton, waypointRemoveBtn1, waypointRemoveBtn2;
+    private boolean drawer_expand = true;
+
+    List<Polyline> allPolylines = new ArrayList<>(); // Contains all currently drawn polyline data, REMEMBER TO CLEAR
+
+    //Location preferences
+    GeoCoderHelper geoCoderHelper = new GeoCoderHelper();
+    int LOCATION_REQUEST_CODE = 10001;
+
+
+    //Route and map preferences
+    private MarkerOptions place1, place2, wayPoint1, wayPoint2;
+    TextView distance, duration;
+    private int locker = 0;
+    private double startLat, startLng, stopLat, stopLng;
+    private String fastestRoute;
+    private HashMap<String, Route> polylineHashMap = new HashMap<>(); // Contains polyline id and matching route info
+    private Route currentRoute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drive);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        //PlaceAutocomplete settings
+        Places.initialize(getApplicationContext(), "AIzaSyAgq2L4uIOTgYzQXiLLMMLcAWwmDR0Z3fA");
+        AutoCompleteStartpointListView = (ListView)findViewById(R.id.set_ride_autoComplete_startpointListView);
+        AutoCompleteDestinationListView = (ListView)findViewById(R.id.set_ride_autoComplete_destinationListView);
+        autoCompleteValues = new ArrayList<>();
+        autoCompleteListAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, android.R.id.text1, autoCompleteValues);
+
+        //Buttons
+        locationButton = findViewById(R.id.set_ride_sijaintiButton);
+        locationButton.setOnClickListener(this);
+        findViewById(R.id.set_ride_haeButton).setOnClickListener(this);
+        findViewById(R.id.set_ride_etappiBtn).setOnClickListener(this);
+        waypointRemoveBtn1 = (ImageButton)findViewById(R.id.set_ride_etappiRemoveBtn);
+        waypointRemoveBtn2 = (ImageButton)findViewById(R.id.set_ride_etappiRemoveBtn2);
+        waypointRemoveBtn1.setOnClickListener(this);
+        waypointRemoveBtn2.setOnClickListener(this);
+        nextBtn = (Button) findViewById(R.id.set_ride_nextBtn);
+        nextBtn.setOnClickListener(this);
+        nextBtn.setEnabled(false);
+
+
+        //Editors
+        startEditor = (EditText) findViewById(R.id.set_ride_lahtoEdit);
+        destinationEditor = (EditText) findViewById(R.id.set_ride_maaranpaaEdit);
+        waypointEditor1 = (EditText) findViewById(R.id.set_ride_etappiEdit);
+        waypointEditor2 = (EditText) findViewById(R.id.set_ride_etappiEdit2);
+
+
+        //Add google map to set_ride_mapView fragment
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.set_ride_mapView);
+        mapFragment.getMapAsync(this);
+
+        //Layout preferences
+        ttbAnim = new AnimationUtils().loadAnimation(this, R.anim.toptobottomanimation);
+        bttAnim = new AnimationUtils().loadAnimation(this, R.anim.bottomtotopanimation);
+        linearContainer = (LinearLayout) findViewById(R.id.set_ride_linearLayout);
+        drawerButton = (Button) findViewById(R.id.set_ride_drawer_bottom);
+        routeDetails = (ConstraintLayout) findViewById(R.id.set_ride_routeDetails);
+        distance = (TextView) findViewById(R.id.set_ride_infoTxt);
+        duration = (TextView) findViewById(R.id.set_ride_infoTxt2);
+
+        bttAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                linearContainer.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 0));
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+
+        //AutoComplete request update after added every character. And addresses save to "autoCompleteValues" arraylist.
+        startEditor.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                autoCompleteValues.clear();
+                AutoCompleteStartpointListView.setVisibility(View.VISIBLE);
+
+                PlaceAutoComplete(startEditor.getText().toString(), 0);
+            }
+        });
+
+        //AutoComplete request update after added every character. And addresses save to "autoCompleteValues" arraylist.
+        destinationEditor.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                autoCompleteValues.clear();
+                AutoCompleteDestinationListView.setVisibility(View.VISIBLE);
+
+                PlaceAutoComplete(destinationEditor.getText().toString(), 1);
+            }
+        });
+
+        //itemClickListener to startpointListView. Add clicked address to startEditor field
+        AutoCompleteStartpointListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                startEditor.setText(((TextView) view).getText().toString());
+                autoCompleteValues.clear();
+                AutoCompleteStartpointListView.setVisibility(View.GONE);
+            }
+        });
+
+        //itemClickListener to destinationPointListView. Add clicked address to endEditor field
+        AutoCompleteDestinationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                destinationEditor.setText(((TextView) view).getText().toString());
+                autoCompleteValues.clear();
+                AutoCompleteDestinationListView.setVisibility(View.GONE);
+            }
+        });
     }
+
+
+    //Layout menu animation functionality
+    public void expandableDrawer(View view) { animationHandler(); }
+    private void animationHandler(){
+        if (!drawer_expand){
+            linearContainer.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            doAnimation(ttbAnim);
+            drawer_expand = true;
+        }else{
+            doAnimation(bttAnim);
+            drawer_expand = false;
+        }
+    }
+
+    private void doAnimation(Animation anim){
+        linearContainer.startAnimation(anim);
+        drawerButton.startAnimation(anim);
+        // locationButton.startAnimation(anim);
+    }
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        //Zoom a map up to Sri Lanka when open that activity
+        mMap = googleMap;
+        LatLng suomi = new LatLng(7.8730540, 80.7717970);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(suomi));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(suomi, 8));
+        mMap.setOnPolylineClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    //Ask permission to use location from user
+    private void askLocationPermission() {
+        if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
+                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+            }else{
+                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //Permission granted
+                Toast.makeText(activity_drive.this, R.string.setride_search_location, Toast.LENGTH_LONG).show();
+
+                AsyncTaskGetLocation getLocation = new AsyncTaskGetLocation();
+                getLocation.execute();
+
+            } else {
+                //Permission not granted
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    //This block here means PERMANENTLY DENIED PERMISSION
+                    new AlertDialog.Builder(activity_drive.this)
+                            .setMessage(R.string.setride_location_message)
+                            .setPositiveButton(R.string.setride_location_button_positive, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    gotoApplicationSettings();
+                                }
+                            })
+                            .setNegativeButton(R.string.setride_location_button_negative, null)
+                            .setCancelable(false)
+                            .show();
+                } else {
+                    Log.d("mylog", "Permission not granted ");
+                }
+            }
+        }
+    }
+
+    //This functio move user to phone permissions settings
+    private void gotoApplicationSettings(){
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", this.getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
+
+    }
+
+    // Build and return url from parameters and route details
+    private String getUrl(LatLng origin, LatLng dest, String directionMode){
+
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        // Mode
+        String mode = "mode=" + directionMode;
+        // Building the parameters to the web service
+
+        //String parameters = str_origin + "&" + str_dest + 64.080600,%2024.533221" + "&" + mode;
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
+
+        Log.d("mylog", "WAYPOINTTI 1: " + wayPoint1);
+        if(wayPoint1 != null)
+        {
+            parameters = str_origin + "&" + str_dest + "&waypoints=via:" + wayPoint1.getPosition().latitude
+                    + "," + wayPoint1.getPosition().longitude + "&" + mode;
+            Log.d("mylog", "getUrl: WAY1  ");
+        }
+        if(wayPoint1 != null & wayPoint2 != null)
+        {
+            parameters = str_origin + "&" + str_dest + "&waypoints=via:" + wayPoint1.getPosition().latitude
+                    + "," + wayPoint1.getPosition().longitude + "|via:" + wayPoint2.getPosition().latitude
+                    + "," + wayPoint2.getPosition().longitude + "&" + mode;
+            Log.d("mylog", "getUrl: WAT2 ");
+        }
+        if(wayPoint2 != null & wayPoint1 == null)
+        {
+            parameters = str_origin + "&" + str_dest + "&waypoints=via:" + wayPoint2.getPosition().latitude
+                    + "," + wayPoint2.getPosition().longitude + "&" + mode;
+            Log.d("mylog", "getUrl: WAY1 ja WAY2 ");
+        }
+
+        // Output format
+        String output = "json";
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters
+                + "&alternatives=true&key=" + "AIzaSyCyncao4uXc6y6XJnGnc1-08ld7s8Bslk8";
+
+        Log.d("URL_HAKU", url);
+        return url;
+    }
+
+    // SetRideTaskLoadedCallback onTaskDone, add route polyline to map if route search success
+    // This is called once for each polyline added
+    @Override
+    public void onTaskDone(Object... values) {
+
+        Route route = (Route) values[0];
+        Log.d("mylog", "onTaskDone: " + route.getRideDistance()+ "km ride");
+
+        PolylineOptions polylineOptions = route.getLineOptions();
+
+        Polyline polyline = mMap.addPolyline(polylineOptions);
+        allPolylines.add(polyline); // Adding polyline to list of all polylines
+        polylineHashMap.put(polyline.getId(), route);
+
+        if(allPolylines.size() == 1)
+        {
+            currentRoute = route;
+            fastestRoute = allPolylines.get(0).getId();
+            routeDetails.setVisibility(View.VISIBLE);
+            distance.setText(currentRoute.getRideDistance()+ " km");
+            duration.setText(currentRoute.getRideDuration());
+            nextBtn.setEnabled(true);
+        }
+
+        polyline.setClickable(true);
+    }
+
+    //Sets the clicked route as active
+    @Override
+    public void onPolylineClick(Polyline clickedPolyline) {
+
+        Log.d("mylog", "onPolylineClick: POLYLINE " + clickedPolyline.getId());
+
+        for(Polyline polyline : allPolylines)
+        {
+            // Checking for clicked polyline match in list
+            if(clickedPolyline.getId().equals(polyline.getId()))
+            {
+                //Set "duration" text to green, if clicked route is fastest alternative
+                if(clickedPolyline.getId().equals(fastestRoute)) {
+                    duration.setTextColor(Color.GREEN);
+                }else{
+                    duration.setTextColor(Color.GRAY);
+                }
+                polyline.setColor(Color.BLUE);
+                polyline.setZIndex(1);
+                currentRoute = polylineHashMap.get(polyline.getId());
+                distance.setText(currentRoute.getRideDistance() + " km");
+                duration.setText(currentRoute.getRideDuration());
+            }
+            else
+            {
+                polyline.setColor(Color.GRAY);
+                polyline.setZIndex(0);
+            }
+        }
+
+    }
+
+    // Set autocomplete listviews invisible if user click anywhere out of listview
+    public void anywhereClicked(View view) {
+        Log.d("CLICK", "constrainClicked: ");
+        AutoCompleteStartpointListView.setVisibility(View.GONE);
+        AutoCompleteDestinationListView.setVisibility(View.GONE);
+    }
+
+
+
+    //This funktio will called when user add character in start- or destination editor.
+    // Param "character" is that added character and param "selector" is value 0 or 1
+    // 0 = startPointEditor and 1 = destinationPointEditor
+    private void PlaceAutoComplete(String character, int selector){
+
+        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+
+        RectangularBounds bounds = RectangularBounds.newInstance(
+                new LatLng(7.8731, 80.7718),
+                new LatLng(7.8731, 80.7718));
+
+        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
+                .setLocationBias(bounds)
+                .setCountry("LK") //Sri Lanka
+                .setSessionToken(token)
+                .setQuery(character)
+                .build();
+
+        PlacesClient placesClient = Places.createClient(this);
+
+        placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
+            for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
+                autoCompleteValues.add(prediction.getFullText(null).toString());
+                Log.i(TAG, prediction.getPlaceId());
+                Log.i(TAG, prediction.getPrimaryText(null).toString());
+            }
+            //Add autoCompleteValues to startPointListView
+            if(selector == 0){
+                AutoCompleteStartpointListView.setAdapter(autoCompleteListAdapter);
+            }
+            //Add autoCompleteValues to destinationPointListView
+            else if(selector == 1){
+                AutoCompleteDestinationListView.setAdapter(autoCompleteListAdapter);
+            }
+        }).addOnFailureListener((exception) -> {
+                    if (exception instanceof ApiException) {
+                        ApiException apiException = (ApiException) exception;
+                        Log.e(TAG, "Place not found: " + apiException.getStatusCode());
+                        Toast.makeText(activity_drive.this, "Place not found", Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+    }
+
+    //Search location to starteditor in asynctask
+    private class AsyncTaskGetLocation extends AsyncTask<Void, Void, String> {
+
+        private String geoAddress;
+        @Override
+        protected String doInBackground(Void... voids) {
+
+            if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                LocationRequest locationRequest = new LocationRequest();
+                locationRequest.setInterval(10000);
+                locationRequest.setFastestInterval(3000);
+                locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+                LocationServices.getFusedLocationProviderClient(activity_drive.this)
+                        .requestLocationUpdates(locationRequest, new LocationCallback(){
+
+                            @Override
+                            public void onLocationResult(LocationResult locationResult) {
+                                super.onLocationResult(locationResult);
+                                LocationServices.getFusedLocationProviderClient(activity_drive.this)
+                                        .removeLocationUpdates(this);
+                                if(locationResult != null && locationResult.getLocations().size() > 0){
+                                    int latestLocationIndex = locationResult.getLocations().size() -1;
+                                    double latitude =
+                                            locationResult.getLocations().get(latestLocationIndex).getLatitude();
+                                    double longitude =
+                                            locationResult.getLocations().get(latestLocationIndex).getLongitude();
+                                    Log.d("mylog", "onLocationResult: " + latitude + longitude);
+
+                                    Location location = new Location("provider");
+                                    location.setLatitude(latitude);
+                                    location.setLongitude(longitude);
+
+                                    geoAddress = geoCoderHelper.fullAddressLocation(location, activity_drive.this);
+                                    startEditor.setText(geoAddress);
+                                }
+
+                            }
+                        }, Looper.getMainLooper());
+            }
+            return null;
+        }
+    }
+
 }
