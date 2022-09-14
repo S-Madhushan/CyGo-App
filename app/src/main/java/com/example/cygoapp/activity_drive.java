@@ -426,8 +426,8 @@ public class activity_drive extends AppCompatActivity implements Serializable, O
 
                     Intent details = new Intent(activity_drive.this, activity_set_ride_details.class);
                     try{
-                        details.putExtra("ALKUOSOITE", strStart);
-                        details.putExtra("LOPPUOSOITE", strDestination);
+                        details.putExtra("STRSTART", strStart);
+                        details.putExtra("STRDEST", strDestination);
                         details.putExtra("STARTCITY" , startCity);
                         details.putExtra("ENDCITY", endCity);
                         details.putExtra("DISTANCE", currentRoute.rideDistance);
@@ -436,6 +436,7 @@ public class activity_drive extends AppCompatActivity implements Serializable, O
                         details.putExtra("POINTS", (Serializable) currentRoute.selectPoints);
 
                         startActivity(details);
+                        finish();
                     }catch (Exception e){
                         //Log.d("mylog", "putExtra Failed: ");
                     }
