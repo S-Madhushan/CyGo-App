@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,10 +38,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cygoapp.callbacks.SetRideTaskLoadedCallback;
+import com.example.cygoapp.constant.Constant;
 import com.example.cygoapp.helper.GeoCoderHelper;
 
 import com.example.cygoapp.models.Route;
 
+import com.example.cygoapp.util.GetCoordinatesUtility;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -179,15 +182,15 @@ public class activity_drive extends AppCompatActivity implements Serializable, O
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 autoCompleteValues.clear();
                 AutoCompleteStartpointListView.setVisibility(View.VISIBLE);
 
                 PlaceAutoComplete(startEditor.getText().toString(), 0);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -200,15 +203,15 @@ public class activity_drive extends AppCompatActivity implements Serializable, O
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 autoCompleteValues.clear();
                 AutoCompleteDestinationListView.setVisibility(View.VISIBLE);
 
                 PlaceAutoComplete(destinationEditor.getText().toString(), 1);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -266,7 +269,199 @@ public class activity_drive extends AppCompatActivity implements Serializable, O
 
     @Override
     public void onClick(View v) {
+        if (v.getId() == R.id.set_ride_etappiBtn & locker == 0)
+        {
+            waypointEditor1.setVisibility(View.VISIBLE);
+            waypointRemoveBtn1.setVisibility(View.VISIBLE);
+            locker = 1;
 
+        }
+        else if (v.getId() == R.id.set_ride_etappiBtn & locker == 1)
+        {
+            waypointEditor2.setVisibility(View.VISIBLE);
+            waypointRemoveBtn2.setVisibility(View.VISIBLE);
+        }
+        else if (v.getId() == R.id.set_ride_etappiRemoveBtn)
+        {
+            waypointEditor1.setVisibility(View.GONE);
+            waypointRemoveBtn1.setVisibility(View.GONE);
+            strWaypoint1 = "";
+            waypointEditor1.setText(strWaypoint1);
+            locker = 0;
+        }
+        else if (v.getId() == R.id.set_ride_etappiRemoveBtn2)
+        {
+            waypointEditor2.setVisibility(View.GONE);
+            waypointRemoveBtn2.setVisibility(View.GONE);
+            strWaypoint2 = "";
+            waypointEditor2.setText(strWaypoint2);
+        }
+
+        //"GET ROUTE" -button functionality
+        else if(v.getId() == R.id.set_ride_haeButton)
+        {
+            //Set waypoints to null if user research route
+            wayPoint1 = null;
+            wayPoint2 = null;
+
+            mMap.clear();   // Clearing map markers and polylines
+            allPolylines.clear(); // Clearing list containing references to those polylines => frees their memory
+            polylineHashMap.clear();
+
+            //Hiding keyboard
+            Constant.hideKeyboard(activity_drive.this);
+
+            routeDetails.setVisibility(View.GONE);
+
+            /*
+            //Lifting up route details element when user press "GET ROUTE" button
+            doAnimation(bttAnim);
+             */
+
+            strStart = startEditor.getText().toString();
+            strDestination = destinationEditor.getText().toString();
+            strWaypoint1 = waypointEditor1.getText().toString();
+            strWaypoint2 = waypointEditor2.getText().toString();
+
+            //Check if waypoint1 editor is not null
+            if(strWaypoint1 != null && !strWaypoint1.isEmpty())
+            {
+                //Get coordinates to waypoints
+                GetWaypointCoordinatesASync getWaypointCoordinatesASync = new GetWaypointCoordinatesASync(new GetWaypointCoordinatesInterface() {
+                    @Override
+                    public void getWayCoordinates(GetCoordinatesUtility getCoordinatesUtility) {
+                        double way1Lat = getCoordinatesUtility.getWayLat();
+                        double way1Lng = getCoordinatesUtility.getWayLng();
+                        Log.d("mylog", "getCoordinates WAYPOINT1: " + way1Lat + way1Lng);
+                        wayPoint1 = new MarkerOptions().position(new LatLng(way1Lat, way1Lng)).title("Pysähdys 1");
+                        mMap.addMarker(wayPoint1);
+                    }
+                }, activity_drive.this);
+                getWaypointCoordinatesASync.execute(strWaypoint1);
+            }
+            //Check if waypoint2 editor is not null
+            if(strWaypoint2 != null && !strWaypoint2.isEmpty())
+            {
+                //Get coordinates to waypoints
+                GetWaypointCoordinatesASync getWaypointCoordinatesASync = new GetWaypointCoordinatesASync(new GetWaypointCoordinatesInterface() {
+                    @Override
+                    public void getWayCoordinates(GetCoordinatesUtility getCoordinatesUtility) {
+                        double way2Lat = getCoordinatesUtility.getWayLat();
+                        double way2Lng = getCoordinatesUtility.getWayLng();
+                        Log.d("mylog", "getCoordinates WAYPOINT1: " + way2Lat + way2Lng);
+                        wayPoint2 = new MarkerOptions().position(new LatLng(way2Lat, way2Lng)).title("Pysähdys 2");
+                        mMap.addMarker(wayPoint2);
+                    }
+                }, activity_drive.this);
+                getWaypointCoordinatesASync.execute(strWaypoint2);
+            }
+
+            //Get full address to "startPointEditor", example ("kaarnatie 5, 90350 Oulu, Suomi")
+            GetFullAddressASync getFullAddressASync = new GetFullAddressASync(new GetFullAddressInterface() {
+                @Override
+                public void getFullAddress(GetCoordinatesUtility getCoordinatesUtility) {
+                    String address = getCoordinatesUtility.getFullAddress();
+                    startEditor.setText(address);
+                    AutoCompleteStartpointListView.setVisibility(View.GONE);
+                    if(address == null){
+                        Toast.makeText(activity_drive.this, R.string.setride_check_start_position, Toast.LENGTH_LONG).show();
+                    }
+                }
+            }, activity_drive.this);
+            getFullAddressASync.execute(strStart);
+
+            //Get full address to "destinationPointEditor", example ("kaarnatie 5, 90350 Oulu, Suomi")
+            GetFullAddressASync getFullAddressASync2 = new GetFullAddressASync(new GetFullAddressInterface() {
+                @Override
+                public void getFullAddress(GetCoordinatesUtility getCoordinatesUtility) {
+                    String address = getCoordinatesUtility.getFullAddress();
+                    destinationEditor.setText(address);
+                    AutoCompleteDestinationListView.setVisibility(View.GONE);
+                    if(address == null){
+                        Toast.makeText(activity_drive.this, R.string.setride_check_destination_position, Toast.LENGTH_LONG).show();
+                    }
+                }
+            }, activity_drive.this);
+            getFullAddressASync2.execute(strDestination);
+
+            //Getting start and destination coordinates in asynctask
+            GetCoordinatesASync getCoordinatesASync = new GetCoordinatesASync(new GetCoordinatesInterface() {
+                @Override
+                public void getCoordinates(GetCoordinatesUtility getCoordinatesUtility) {
+                    try {
+                        startLat = getCoordinatesUtility.getStartLat();
+                        startLng = getCoordinatesUtility.getStartLng();
+                        stopLat = getCoordinatesUtility.getDestinationLat();
+                        stopLng = getCoordinatesUtility.getDestinationLng();
+
+                        place1 = new MarkerOptions().position(new LatLng(startLat, startLng)).title("Location 1");
+                        place2 = new MarkerOptions().position(new LatLng(stopLat, stopLng)).title("Location 2");
+                        new SetRideFetchURL(activity_drive.this).execute(getUrl(place1.getPosition(), place2.getPosition(),"driving"), "driving");
+
+                        mMap.addMarker(place1);
+                        mMap.addMarker(place2);
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place2.getPosition(),8));
+
+                        routeDetails.setVisibility(View.VISIBLE);
+                    }catch (Exception e){
+                        Toast.makeText(activity_drive.this, R.string.setride_check_start_and_destination, Toast.LENGTH_LONG).show();
+                    }
+                }
+            }, activity_drive.this);
+
+            if(strStart != null && strDestination != null){
+                getCoordinatesASync.execute(strStart, strDestination);
+            }
+        }
+
+        //"CONTINUE TO DETAILS" -button functionality
+        else if(v.getId() == R.id.set_ride_nextBtn)
+        {
+            //Get start- and destination city to helping firestore and move all needed information to "SetRideDetailsActivity"
+            GetCityASync getCityASync = new GetCityASync(new GetCityInterface() {
+                @Override
+                public void getCity(GetCoordinatesUtility getCity) {
+                    String startCity = getCity.getStartCity();
+                    String endCity = getCity.getDestinationCity();
+
+                    Intent details = new Intent(activity_drive.this, activity_set_ride_details.class);
+                    try{
+                        details.putExtra("ALKUOSOITE", strStart);
+                        details.putExtra("LOPPUOSOITE", strDestination);
+                        details.putExtra("STARTCITY" , startCity);
+                        details.putExtra("ENDCITY", endCity);
+                        details.putExtra("DISTANCE", currentRoute.rideDistance);
+                        details.putExtra("DURATION", currentRoute.rideDuration);
+                        details.putExtra("BOUNDS",   currentRoute.bounds);
+                        details.putExtra("POINTS", (Serializable) currentRoute.selectPoints);
+
+                        startActivity(details);
+                    }catch (Exception e){
+                        //Log.d("mylog", "putExtra Failed: ");
+                    }
+
+                }
+            }, activity_drive.this);
+            getCityASync.execute(strStart, strDestination);
+        }
+
+        //"GET MY LOCATION" -button functionality
+        else if(v.getId() == R.id.set_ride_sijaintiButton)
+        {
+
+            if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            {
+                //Location granted
+                Toast.makeText(activity_drive.this, R.string.setride_search_location, Toast.LENGTH_LONG).show();
+
+                AsyncTaskGetLocation getLocation = new AsyncTaskGetLocation();
+                getLocation.execute();
+            }
+            else {
+                //Location not granted
+                askLocationPermission();
+            }
+        }
     }
 
     //Ask permission to use location from user
@@ -363,7 +558,7 @@ public class activity_drive extends AppCompatActivity implements Serializable, O
         String output = "json";
         // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters
-                + "&alternatives=true&key=" + "AIzaSyCyncao4uXc6y6XJnGnc1-08ld7s8Bslk8";
+                + "&alternatives=true&key=" + "AIzaSyAgq2L4uIOTgYzQXiLLMMLcAWwmDR0Z3fA";
 
         Log.d("URL_HAKU", url);
         return url;
@@ -485,6 +680,7 @@ public class activity_drive extends AppCompatActivity implements Serializable, O
     private class AsyncTaskGetLocation extends AsyncTask<Void, Void, String> {
 
         private String geoAddress;
+        @SuppressLint("MissingPermission")
         @Override
         protected String doInBackground(Void... voids) {
 
