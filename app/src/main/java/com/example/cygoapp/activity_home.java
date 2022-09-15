@@ -1,203 +1,515 @@
 package com.example.cygoapp;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.core.view.MenuItemCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-import android.content.DialogInterface;
+import android.app.AlertDialog;
 import android.content.Intent;
-import android.net.Uri;
+
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+
+import android.content.SharedPreferences;
+
+import android.opengl.Visibility;
 import android.os.Bundle;
+
+import android.util.Log;
+
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import android.view.LayoutInflater;
 
 import android.view.View;
 
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RatingBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import com.example.cygoapp.components.MainActivityFragments;
+import com.example.cygoapp.models.RatingGiver;
+import com.example.cygoapp.models.Ride;
+import com.example.cygoapp.models.RideUser;
 import com.example.cygoapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
-public class activity_home extends AppCompatActivity {
 
-    String name;
-    boolean complete;
-    ImageView profileImage;
-    TextView txtName, txtGreeting;
-    RatingBar ratingBar;
-    Button btnDrive, btnGo, btnBooked, btnRides, btnSettings,btnLogout;
-    ProgressBar progressBar;
-    FirebaseAuth authProfile;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+
+public class activity_home extends FragmentActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    // NavigationDrawer menu
+    DrawerLayout drawer;
+    NavigationView navigationView;
+
+    TextView tv_rating;
+
+    private ViewPager ridesViewPager;
+    private FragmentPagerAdapter fragmentPagerAdapter;
+    private LinearLayout getRideBtn, offerRideBtn;
+    private CollectionReference mRidesColRef = FirebaseFirestore.getInstance().collection("rides");
+    private CollectionReference mUsersColRef = FirebaseFirestore.getInstance().collection("customers");
+    private ArrayList<RideUser> bookedRideUserArrayList = new ArrayList<>();
+    private ArrayList<RideUser> offeredRideUserArrayList = new ArrayList<>();
+    private boolean complete;
+
+    ImageView bookBackground;
+    ImageView offerbackground;
+    ImageView userAcc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_home2);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        profileImage=findViewById(R.id.imgUserAcc);
-        txtName=findViewById(R.id.txtName);
-        txtGreeting=findViewById(R.id.txtNote);
-        ratingBar=findViewById(R.id.ratingBar);
-        btnDrive=findViewById(R.id.btnDrivewithCyGoins);
-        btnDrive.setEnabled(false);
-        btnGo=findViewById(R.id.btnGowithCyGoins);
-        btnGo.setEnabled(false);
-        btnBooked=findViewById(R.id.BookedRides);
-        btnBooked.setEnabled(false);
-        btnRides=findViewById(R.id.OfferedRides);
-        btnRides.setEnabled(false);
-        btnSettings=findViewById(R.id.settings);
-        btnLogout=findViewById(R.id.logout);
-        progressBar=findViewById(R.id.progressBar);
+        //NavigationDrawer
+        drawer =  findViewById(R.id.drawer_layout);
+        navigationView =  findViewById(R.id.nav_view);
+        userAcc = findViewById(R.id.imgUsrAcc);
 
-        authProfile=FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = authProfile.getCurrentUser();
+//        NavigationView navigationView = findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+        View headerView = navigationView.inflateHeaderView(R.layout.navi_header);
+        TextView naviUser = (TextView) headerView.findViewById(R.id.navi_header_text);
+        TextView naviEmail = (TextView) headerView.findViewById(R.id.navi_header_emailtext);
+        TextView main_nameText = findViewById(R.id.main_nameText);
 
-        if(firebaseUser == null){
-            Toast.makeText(activity_home.this, "Something went wrong",Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(activity_home.this,activity_sign_in.class);
 
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-        }else{
-            Uri uri = firebaseUser.getPhotoUrl();
-            if(uri != null) {
-                Picasso.get().load(uri).into(profileImage);
-            }
-            checkEmailVerified(firebaseUser);
-            progressBar.setVisibility(View.VISIBLE);
-            showUserDetails(firebaseUser);
-        }
-
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                authProfile.signOut();
-                Toast.makeText(activity_home.this, "Logged Out",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(activity_home.this,activity_sign_in.class);
-
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        btnSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(activity_home.this,activity_user_details.class));
-            }
-        });
-
-        btnDrive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    startActivity(new Intent(activity_home.this,activity_drive.class));
-            }
-        });
-
-        btnGo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    startActivity(new Intent(activity_home.this,activity_go.class));
-            }
-        });
-
-        btnBooked.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        btnRides.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-    }
-
-    private void checkEmailVerified(FirebaseUser firebaseUser) {
-        if(!firebaseUser.isEmailVerified()){
-            showAlertDialog();
-        }
-    }
-
-    private void showUserDetails(FirebaseUser firebaseUser) {
-        String userID = firebaseUser.getUid();
+        Picasso.get().load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).into(userAcc);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        DocumentReference docRef = db.collection("customers").document(userID);
-
+        DocumentReference docRef = db.collection("customers").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        User user =  document.toObject(User.class);
-
-                        if(user != null ){
-                            name = firebaseUser.getDisplayName();
-                            txtName.setText(name);
-                            complete = user.isProfileCreated();
-                            if(complete == true){
-                                btnDrive.setEnabled(true);
-                                btnGo.setEnabled(true);
-                                btnBooked.setEnabled(true);
-                                btnRides.setEnabled(true);
-                                txtGreeting.setText("Hi "+name.split(" ")[0]+"!");
-                            }else{
-                                btnDrive.setEnabled(false);
-                                btnGo.setEnabled(false);
-                                btnBooked.setEnabled(false);
-                                btnRides.setEnabled(false);
-                                txtGreeting.setText("Please Complete Your Profile in Settings");
-                            }
-                        progressBar.setVisibility(View.GONE);
-                        }
-
-                     }
-                }else{
-                    Toast.makeText(activity_home.this, "Something went wrong",Toast.LENGTH_LONG).show();
-
+                        User user = document.toObject(User.class);
+                        complete = user.isProfileCreated();
+                    }
                 }
-
             }
         });
+
+            main_nameText.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName().split(" ")[0]);
+            naviUser.setText(getString(R.string.navi_header_hello) + " " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+            naviEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
+            //Check if is some unreviewed ride and put red notification badge to menu icon
+            RatingGiver.GetAmountOfReviews(FirebaseAuth.getInstance().getUid(), new RatingGiver.ReviewAmountCallback() {
+                @Override
+                public void doAfterGettingAmount(int amount) {
+                    Log.d("NAVI", "onCreate: "  + amount);
+                    if(amount > 0){
+                        TextView badgeNumber = (TextView) findViewById(R.id.main_menu_badge);
+                        badgeNumber.setText(String.valueOf(amount));
+                        badgeNumber.setVisibility(View.VISIBLE);
+
+                        LayoutInflater li = LayoutInflater.from(activity_home.this);
+                        tv_rating = (TextView)li.inflate(R.layout.rating_badge,null);
+                        navigationView.getMenu().findItem(R.id.nav_rating).setActionView(tv_rating);
+
+
+                        tv_rating.setText(String.valueOf(amount));
+                    }
+                }
+            });
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        //setting up buttons
+        getRideBtn = findViewById(R.id.main_btnGetRide);
+        offerRideBtn = findViewById(R.id.main_btnOfferRide);
+
+        bookBackground = findViewById(R.id.bookBackground);
+        offerbackground = findViewById(R.id.offerBackground);
+
+        bookBackground.setImageAlpha(128);
+
+        bookedRideUserArrayList.clear();
+        offeredRideUserArrayList.clear();
+
+        FirebaseAuth.AuthStateListener als = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    // If user has logged in
+                    Log.d("TAG", "onAuthStateChanged: true");
+                    // Checking that user has created a profile
+                    // Sends user to profile edit if not
+                    //start loading rides to view pager if logged in.
+                    loadBookedRides();
+                } else {
+                    // If user has logged out
+                    Log.d("TAG", "onAuthStateChanged: false");
+                    //skips the ride loading if not signed in.
+                    initMainLayoutItems();
+                }
+            }
+        };
+        FirebaseAuth.getInstance().addAuthStateListener(als);
+
 
     }
 
-    private void showAlertDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity_home.this);
-        builder.setTitle("Email not verified");
-        builder.setMessage("Please verify your email now. You can not login without verifying");
 
-        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+    public void AppSettings(View v) {
+
+        drawer.openDrawer(Gravity.RIGHT);
+    }
+
+    public void SelectBookedTrips(View v) {
+        bookBackground.setImageAlpha(255);
+        offerbackground.setImageAlpha(128);
+        ridesViewPager.setCurrentItem(1);
+    }
+
+    public void SelectOfferedTrips(View v) {
+        bookBackground.setImageAlpha(128);
+        offerbackground.setImageAlpha(255);
+        ridesViewPager.setCurrentItem(0);
+    }
+
+    public void SelectGetARide(View v) {
+        Intent GetRideIntent = new Intent(activity_home.this, activity_go.class);
+        startActivity(GetRideIntent);
+    }
+
+    public void SelectOfferARide(View v) {
+        Intent SetRideIntent = new Intent(activity_home.this, activity_drive.class);
+        startActivity(SetRideIntent);
+    }
+
+    public void SelectProfile(View v) {
+        Intent SetRideIntent = new Intent(activity_home.this, activity_user_details.class);
+        startActivity(SetRideIntent);
+    }
+
+    public void SelectRating(View v) {
+        Intent RatingIntent = new Intent(activity_home.this, activity_rating.class);
+        startActivity(RatingIntent);
+    }
+
+
+
+    //first get rideId's from current user
+    //then get rides
+    //then get users
+
+    private int NUMBER_OF_BOOKED_TASKS = 0;
+    private int bookedCounter = 0;
+
+    private void loadBookedRides() {
+        final ArrayList<String> curUserRides = new ArrayList<>();
+        Task<DocumentSnapshot> curUserTask = mUsersColRef.document(FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_APP_EMAIL);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    try{
+                        curUserRides.addAll((ArrayList<String>) task.getResult().get("bookedRides"));
+                        NUMBER_OF_BOOKED_TASKS = curUserRides.size();
+                        Log.d("TAG", "12313123: ");
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                        loadOfferedRides();
+                    }
+                }
+                else{
+                    //task is not successful
+                    loadOfferedRides();
+                }
             }
         });
 
-        AlertDialog alertDialog = builder.create();
+        Tasks.whenAll(curUserTask).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    try{
+                        if(curUserRides.size() > 0){
+                            for(int i = 0; i < curUserRides.size(); i++){
+                                mRidesColRef.document(curUserRides.get(i)).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if(task.isSuccessful()){
+                                            final Ride ride = task.getResult().toObject(Ride.class);
+                                            final String rideId = task.getResult().getId();
+                                            mUsersColRef.document(ride.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if(task.isSuccessful()) {
+                                                        User user = task.getResult().toObject(User.class);
+                                                        bookedRideUserArrayList.add(new RideUser(ride, user, rideId));
+                                                        taskCompletedBookedRides();
+                                                    }
+                                                    else {
+                                                        //task is not successful
+                                                        loadOfferedRides();
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        else{
+                                            //task is not successful
+                                            loadOfferedRides();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                        else{
+                            //no booked rides
+                            loadOfferedRides();
+                        }
+                    } catch (Exception e){
+                        e.printStackTrace();
+                        loadOfferedRides();
+                    }
+                }
+                else{
+                    //task is not successful
+                    loadOfferedRides();
+                }
+            }
+        });
+    }
 
-        alertDialog.show();
+    private synchronized void taskCompletedBookedRides() {
+        bookedCounter ++;
+        if(bookedCounter == NUMBER_OF_BOOKED_TASKS){
+            loadOfferedRides();
+        }
+    }
+
+    private static int NUMBER_OF_OFFERED_TASKS = 0;
+    private int offeredCounter = 0;
+
+    private void loadOfferedRides() {
+        mRidesColRef.whereEqualTo("uid", FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    try {
+                        NUMBER_OF_OFFERED_TASKS = task.getResult().size();
+                        if (NUMBER_OF_OFFERED_TASKS > 0) {
+                            Log.d("TAG", "onComplete task size: " + NUMBER_OF_OFFERED_TASKS);
+                            try {
+                                for (QueryDocumentSnapshot doc : task.getResult()) {
+                                    final Ride ride = doc.toObject(Ride.class);
+                                    final String rideId = doc.getId();
+
+                                    mUsersColRef.document(ride.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                DocumentSnapshot doc = task.getResult();
+                                                User user = doc.toObject(User.class);
+                                                offeredRideUserArrayList.add(new RideUser(ride, user, rideId));
+                                                Log.d("TAG", "onComplete: ");
+                                                taskCompletedOfferedRides();
+                                            } else {
+                                                //task is not successful
+                                                initMainLayoutItems();
+                                            }
+                                        }
+                                    });
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                taskCompletedOfferedRides();
+                            }
+                        } else {
+                            initMainLayoutItems();
+                            //No offered rides
+                        }
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                        initMainLayoutItems();
+                    }
+                }
+                else{
+                    initMainLayoutItems();
+                    //task is not successful
+                }
+            }
+        });
+    }
+
+    private synchronized void taskCompletedOfferedRides() {
+        offeredCounter ++;
+        if(NUMBER_OF_OFFERED_TASKS == offeredCounter) {
+            initMainLayoutItems();
+        }
+    }
+
+    private void initMainLayoutItems() {
+        //setting up viewpager, viewpager header and adapter
+        Log.d("TAG", "initMainLayoutItems: ");
+        ridesViewPager = findViewById(R.id.main_viewPager);
+        fragmentPagerAdapter = new RidesViewPagerAdapter(getSupportFragmentManager());
+        fragmentPagerAdapter.notifyDataSetChanged();
+        ridesViewPager.setAdapter(fragmentPagerAdapter);
+        //page change listener is for header layout background color change
+        ridesViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 0)
+                {
+                    bookBackground.setImageAlpha(128);
+                    offerbackground.setImageAlpha(255);
+                }
+                else{
+                    bookBackground.setImageAlpha(255);
+                    offerbackground.setImageAlpha(128);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    //Exits application or navigationDrawer when pressed back
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(Gravity.RIGHT)){
+            drawer.closeDrawer(Gravity.RIGHT);
+        }else {
+            super.onBackPressed();
+            finishAffinity();
+        }
+    }
+
+    // NavigationDrawer items functionality
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
+        switch (item.getItemId()){
+            case R.id.nav_profile:
+                Log.d("NAVI", "onNavigationItemSelected: PROFILE");
+                    drawer.closeDrawer(Gravity.RIGHT);
+                    SelectProfile(null);
+                break;
+
+            case R.id.nav_rating:
+                Log.d("NAVI", "onNavigationItemSelected: RATING ");
+                if(complete == true){
+                    drawer.closeDrawer(Gravity.RIGHT);
+                    SelectRating(null);
+                }else{
+                    Toast.makeText(activity_home.this, "Please complete the profile in profile", Toast.LENGTH_LONG).show();
+                }
+                break;
+
+            case R.id.nav_sign:
+                drawer.closeDrawer(Gravity.RIGHT);
+
+                    Log.d("NAVI", "onNavigationItemSelected: LOGOUT?? ");
+                    FirebaseAuth.getInstance().signOut();
+                    Toast.makeText(activity_home.this, "Logged Out",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(activity_home.this,activity_sign_in.class);
+
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                break;
+
+        }
+        return false;
+    }
+
+    //viewpager for rides
+    public class RidesViewPagerAdapter extends FragmentPagerAdapter {
+        //page count is 2, booked and offered rides.
+        private static final int PAGE_COUNT = 2;
+        View v;
+        //tabs titles will always be booked rides and offered rides.
+        private final String[] tabTitles = new String[]{getResources().getString(R.string.main_fragment_tab_booked), getResources().getString(R.string.main_fragment_tab_offered)};
+
+        //constructor for viewpager
+        public RidesViewPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem (int position){
+            /**
+             * switch case in viewpager to know which data to show.
+             * case 0 = booked rides.
+             * case 1 = offered rides.
+             * The integer is there to tell fragments what to print if the array list size is 0 in
+             * MainActivityFragments.java
+             */
+
+            Log.d("TAG", "getItem: " + bookedRideUserArrayList.size() + " " + offeredRideUserArrayList.size());
+
+            switch (position) {
+                case 0:
+                    return MainActivityFragments.newInstance(bookedRideUserArrayList, offeredRideUserArrayList, 0);
+
+                case 1:
+                    return MainActivityFragments.newInstance(bookedRideUserArrayList, offeredRideUserArrayList, 1);
+
+                default:
+                    return null;
+            }
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle ( int position){
+            return tabTitles[position];
+        }
+
+        @Override
+        public int getCount () {
+            return PAGE_COUNT;
+        }
     }
 }
