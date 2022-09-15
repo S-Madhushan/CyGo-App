@@ -28,12 +28,12 @@ import android.widget.TimePicker;
 import com.example.cygoapp.helper.CalendarHelper;
 import com.example.cygoapp.models.Ride;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -527,36 +527,20 @@ public class activity_set_ride_details extends AppCompatActivity implements Seri
                 selectedPoints, bounds, new ArrayList<String>(),
                 new ArrayList<String>(), pickUpDistance, startCity, endCity, departureTimeTxt, luggageTxt, pets);
 
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("rides");
-            ref.push().setValue(r).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if(task.isSuccessful())
-                    {
-                        // Ride creation succesfull
-                        showCustomDialogSuccessful();
-                    }
-                    else {
-                        // Ride create failed
-                        showCustomDialogFailed();
-                    }
+            FirebaseFirestore.getInstance().collection("rides").add(r).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if(task.isSuccessful())
+                {
+                    // Ride creation successful
+                    showCustomDialogSuccessful();
                 }
-            });
-
-//            FirebaseDatabase.getInstance().collection("rides").add(r).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentReference> task) {
-//                if(task.isSuccessful())
-//                {
-//                    // Ride creation succesfull
-//                    showCustomDialogSuccessful();
-//                }
-//                else {
-//                    // Ride create failed
-//                    showCustomDialogFailed();
-//                }
-//            }
-//        });
+                else {
+                    // Ride create failed
+                    showCustomDialogFailed();
+                }
+            }
+        });
 
     }
 

@@ -8,9 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+
 import android.view.View;
-import android.view.WindowManager;
+
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -19,13 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cygoapp.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 public class activity_home extends AppCompatActivity {
@@ -138,38 +138,47 @@ public class activity_home extends AppCompatActivity {
     private void showUserDetails(FirebaseUser firebaseUser) {
         String userID = firebaseUser.getUid();
 
-        DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("customers");
-        referenceProfile.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        DocumentReference docRef = db.collection("customers").document(userID);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user =  snapshot.getValue(User.class);
-                if(user != null ){
-                    name = firebaseUser.getDisplayName();
-                    txtName.setText(name);
-                    complete = user.isProfileCreated();
-                    if(complete == true){
-                        btnDrive.setEnabled(true);
-                        btnGo.setEnabled(true);
-                        btnBooked.setEnabled(true);
-                        btnRides.setEnabled(true);
-                        txtGreeting.setText("Hi "+name.split(" ")[0]+"!");
-                    }else{
-                        btnDrive.setEnabled(false);
-                        btnGo.setEnabled(false);
-                        btnBooked.setEnabled(false);
-                        btnRides.setEnabled(false);
-                        txtGreeting.setText("Please Complete Your Profile in Settings");
-                    }
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        User user =  document.toObject(User.class);
+
+                        if(user != null ){
+                            name = firebaseUser.getDisplayName();
+                            txtName.setText(name);
+                            complete = user.isProfileCreated();
+                            if(complete == true){
+                                btnDrive.setEnabled(true);
+                                btnGo.setEnabled(true);
+                                btnBooked.setEnabled(true);
+                                btnRides.setEnabled(true);
+                                txtGreeting.setText("Hi "+name.split(" ")[0]+"!");
+                            }else{
+                                btnDrive.setEnabled(false);
+                                btnGo.setEnabled(false);
+                                btnBooked.setEnabled(false);
+                                btnRides.setEnabled(false);
+                                txtGreeting.setText("Please Complete Your Profile in Settings");
+                            }
+                        progressBar.setVisibility(View.GONE);
+                        }
+
+                     }
+                }else{
+                    Toast.makeText(activity_home.this, "Something went wrong",Toast.LENGTH_LONG).show();
 
                 }
-                progressBar.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+
     }
 
     private void showAlertDialog() {

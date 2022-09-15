@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.example.cygoapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,8 +28,8 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -161,35 +163,39 @@ public class activity_sign_up extends AppCompatActivity {
 
                     User customer = new User(firebaseUser.getUid(),name,contact,email,nic,"null",null,false,0,0);
 
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference mdatabase = database.getReference("customers");
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                    mdatabase.child(firebaseUser.getUid()).setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                firebaseUser.sendEmailVerification();
+                    db.collection("customers").document(firebaseUser.getUid()).set(customer)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    firebaseUser.sendEmailVerification();
 
-                                progressBar.setVisibility(View.GONE);
+                                    progressBar.setVisibility(View.GONE);
 
-                                Toast.makeText(activity_sign_up.this, "User Registered. Please Verify your email",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(activity_sign_up.this, "User Registered. Please Verify your email",Toast.LENGTH_LONG).show();
 
-                                auth.signOut();
+                                    auth.signOut();
 
-                                //Open User Profile after successful registration
-                                Intent intent = new Intent(activity_sign_up.this,activity_sign_in.class);
-                                //to prevent coming back to sign up
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    //Open User Profile after successful registration
+                                    Intent intent = new Intent(activity_sign_up.this,activity_sign_in.class);
+                                    //to prevent coming back to sign up
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                                startActivity(intent);
-                                finish();
-                            }else{
-                                Toast.makeText(activity_sign_up.this, "User Registration Failed. Please Try Again",Toast.LENGTH_LONG).show();
-                            }
+                                    startActivity(intent);
+                                    finish();
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(activity_sign_up.this, "User Registration Failed. Please Try Again",Toast.LENGTH_LONG).show();
+                                    progressBar.setVisibility(View.GONE);
 
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    });
+                                }
+                            });
+
 
                 }else{
                     try{

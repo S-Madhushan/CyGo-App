@@ -1,8 +1,10 @@
 package com.example.cygoapp.models;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
 
     private String uid;
     private String name;
@@ -119,6 +121,12 @@ public class User {
 
     public void setBookedRides(List<String> bookedRides) {
         this.bookedRides = bookedRides;
+    }
+
+    public void initBookedRides() { bookedRides = new ArrayList<>(); }
+
+    public void addToBookedRides(String routeId) {
+        bookedRides.add(routeId);
     }
 
     public float getRating() {

@@ -17,13 +17,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class activity_change_email extends AppCompatActivity {
 
@@ -154,26 +156,34 @@ public class activity_change_email extends AppCompatActivity {
 
                     String uid = firebaseUser.getUid();
 
-                    DatabaseReference refProfile = FirebaseDatabase.getInstance().getReference("customers").child(uid);
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                    refProfile.child("email").setValue(newEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    DocumentReference ref = db.collection("customers").document(uid);
+
+                    ref.update("email",newEmail).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()) {
-                                firebaseUser.sendEmailVerification();
+                        public void onSuccess(Void unused) {
 
-                                Toast.makeText(activity_change_email.this, "Email Updated. Please Verify", Toast.LENGTH_LONG).show();
+                            Toast.makeText(activity_change_email.this, "Email Updated. Please Verify", Toast.LENGTH_LONG).show();
 
-                                authProfile.signOut();
+                            firebaseUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    authProfile.signOut();
 
-                                Intent intent = new Intent(activity_change_email.this, activity_sign_in.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
-                            }else{
-                                Toast.makeText(activity_change_email.this, "Error", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(activity_change_email.this, activity_sign_in.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
 
-                            }
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(activity_change_email.this, "Error", Toast.LENGTH_LONG).show();
                         }
                     });
 

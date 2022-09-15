@@ -28,11 +28,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -215,63 +213,83 @@ public class activity_user_details extends AppCompatActivity {
 
         String userId = firebaseUser.getUid();
 
-        DatabaseReference refProfile = FirebaseDatabase.getInstance().getReference("customers").child(userId);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        DocumentReference ref = db.collection("customers").document(userId);
 
         progressBar.setVisibility(View.VISIBLE);
 
-        refProfile.child("name").setValue(name).addOnCompleteListener(new OnCompleteListener<Void>() {
+        ref.update("name", name).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    refProfile.child("contact").setValue(contact).addOnCompleteListener(new OnCompleteListener<Void>() {
+            public void onSuccess(Void unused) {
+                    ref.update("contact",contact).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                UserProfileChangeRequest updateName = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
-                                firebaseUser.updateProfile(updateName);
+                        public void onSuccess(Void unused) {
+                            UserProfileChangeRequest updateName = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
 
-                                Toast.makeText(activity_user_details.this,"Updated",Toast.LENGTH_LONG).show();
-                            }else{
-                                Toast.makeText(activity_user_details.this,"Error",Toast.LENGTH_LONG).show();
-                            }
+                            firebaseUser.updateProfile(updateName);
+
+                            Toast.makeText(activity_user_details.this,"Updated",Toast.LENGTH_LONG).show();
+
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(activity_user_details.this,"Error",Toast.LENGTH_LONG).show();
+
+                            progressBar.setVisibility(View.GONE);
                         }
                     });
-                }else{
-                    Toast.makeText(activity_user_details.this,"Error",Toast.LENGTH_LONG).show();
-                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(activity_user_details.this,"Error",Toast.LENGTH_LONG).show();
+
                 progressBar.setVisibility(View.GONE);
             }
         });
+
 
     }
 
     private void showProfile(FirebaseUser firebaseUser) {
         String userid = firebaseUser.getUid();
 
-        DatabaseReference refProfile = FirebaseDatabase.getInstance().getReference("customers");
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        DocumentReference ref = db.collection("customers").document(userid);
 
         progressBar.setVisibility(View.VISIBLE);
 
-        refProfile.child(userid).addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        User user =  document.toObject(User.class);
 
-                if(user != null){
-                    txtName.setText(firebaseUser.getDisplayName());
-                    txtContact.setText(user.getContact());
+                        if(user != null ){
+                            txtName.setText(firebaseUser.getDisplayName());
+                            txtContact.setText(user.getContact());
+                        }else{
+                            Toast.makeText(activity_user_details.this,"Something went wrong",Toast.LENGTH_LONG).show();
+                        }
+                        progressBar.setVisibility(View.GONE);
+                    }
+                    progressBar.setVisibility(View.GONE);
                 }else{
                     Toast.makeText(activity_user_details.this,"Something went wrong",Toast.LENGTH_LONG).show();
-                }
-                progressBar.setVisibility(View.GONE);
-            }
+                    progressBar.setVisibility(View.GONE);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(activity_user_details.this,"Something went wrong",Toast.LENGTH_LONG).show();
-                progressBar.setVisibility(View.GONE);
+                }
+
             }
         });
+
     }
 
     @Override
@@ -333,7 +351,10 @@ public class activity_user_details extends AppCompatActivity {
     private void uploadPicFirebase(Uri uriImage) {
         if(uriImage != null){
             StorageReference fileReference = storageReference.child(authProfile.getCurrentUser().getUid() + "." + getFileExt(uriImage));
-            DatabaseReference refProfile = FirebaseDatabase.getInstance().getReference("customers").child(authProfile.getCurrentUser().getUid());
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            DocumentReference ref = db.collection("customers").document(authProfile.getCurrentUser().getUid());
 
             fileReference.putFile(uriImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -345,8 +366,8 @@ public class activity_user_details extends AppCompatActivity {
 
                             Uri downloadUri = uri;
 
-                            refProfile.child("imgUri").setValue(downloadUri.toString());
-                            refProfile.child("profileCreated").setValue(true);
+                            ref.update("imgUri",downloadUri.toString());
+                            ref.update("profileCreated",true);
 
                             firebaseUser = authProfile.getCurrentUser();
 

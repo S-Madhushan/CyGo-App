@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -145,9 +146,15 @@ public class activity_sign_in extends AppCompatActivity {
                         finish();
 
                     }else{
-                        firebaseUser.sendEmailVerification();
-                        authProfile.signOut();
-                        showAlertDialog();
+
+                        firebaseUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                authProfile.signOut();
+                                showAlertDialog();
+                            }
+                        });
+
                     }
 
                 }else{
