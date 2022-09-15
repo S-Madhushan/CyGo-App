@@ -45,6 +45,7 @@ import com.squareup.picasso.Picasso;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,7 +58,9 @@ public class activity_home extends FragmentActivity implements NavigationView.On
     DrawerLayout drawer;
     NavigationView navigationView;
 
-    TextView tv_rating;
+    TextView tv_rating, reviewAmount;
+
+    RatingBar ratingBar;
 
     private ViewPager ridesViewPager;
     private FragmentPagerAdapter fragmentPagerAdapter;
@@ -83,6 +86,9 @@ public class activity_home extends FragmentActivity implements NavigationView.On
         navigationView =  findViewById(R.id.nav_view);
         userAcc = findViewById(R.id.imgUsrAcc);
 
+        reviewAmount =findViewById(R.id.main_reviewsText);
+        ratingBar = findViewById(R.id.main_ratingBar);
+
 //        NavigationView navigationView = findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
         View headerView = navigationView.inflateHeaderView(R.layout.navi_header);
@@ -102,6 +108,8 @@ public class activity_home extends FragmentActivity implements NavigationView.On
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         User user = document.toObject(User.class);
+                        reviewAmount.setText("Reviews -"+user.getRatingAmount()+"-");
+                        ratingBar.setRating(user.getRating());
                         complete = user.isProfileCreated();
                     }
                 }
