@@ -90,8 +90,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="namee_defaul6"
-            android:textColor="@color/white"
+            android:text="Name"
+            android:textColor="@color/black"
             android:textSize="13sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/main_guideline_middle"/>
@@ -120,8 +120,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="Reviews -10-"
-            android:textColor="@color/white"
+            android:text="Reviews -0-"
+            android:textColor="@color/black"
             android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@id/main_guideline_middle"
             app:layout_constraintBottom_toBottomOf="@id/main_ratingBar"/>

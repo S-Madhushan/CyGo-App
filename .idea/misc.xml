@@ -76,11 +76,12 @@
         <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/drawable-hdpi/info_round.xml" value="0.1" />
         <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/drawable-hdpi/set_ride_details_h1bg.xml" value="0.1425" />
         <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/drawable-hdpi/set_ride_details_h2bg.xml" value="0.1" />
+        <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/drawable/ic_baseline_star_rate_18.xml" value="0.2555" />
         <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/drawable/rounded_btn.xml" value="0.126" />
         <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/drawable/rounded_edittext.xml" value="0.126" />
         <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/layout/activity_drive.xml" value="0.264" />
         <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/layout/activity_go.xml" value="0.4" />
-        <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/layout/activity_home.xml" value="0.536" />
+        <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/layout/activity_home.xml" value="0.264" />
         <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/layout/activity_rating.xml" value="0.25" />
         <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/layout/activity_set_ride_details.xml" value="0.24615384615384617" />
@@ -97,6 +98,7 @@
         <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/layout/navi_header.xml" value="0.264" />
         <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/layout/progressbar_loading.xml" value="0.25" />
         <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/layout/rating_badge.xml" value="0.25" />
+        <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/layout/rating_dialog.xml" value="0.11666666666666667" />
         <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/layout/spinner_title_get_ride.xml" value="0.1925925925925926" />
         <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/layout/view_pager_main_activity.xml" value="0.25" />
         <entry key="..\:/My Android Projects/Android/CyGo App/CyGo-App/app/src/main/res/menu/drawer_menu.xml" value="0.264" />

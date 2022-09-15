@@ -39,7 +39,7 @@ public class RatingGiver {
         final float myRating = (float) givenRating;
 
         // Getting ride's current rating
-        final DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(riderId);
+        final DocumentReference docRef = FirebaseFirestore.getInstance().collection("customers").document(riderId);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
