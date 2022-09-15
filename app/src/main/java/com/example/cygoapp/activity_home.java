@@ -2,7 +2,6 @@ package com.example.cygoapp;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -10,16 +9,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
-
-import android.content.SharedPreferences;
-
-import android.opengl.Visibility;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -42,7 +33,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -53,19 +43,12 @@ import com.squareup.picasso.Picasso;
 
 
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class activity_home extends FragmentActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -92,7 +75,7 @@ public class activity_home extends FragmentActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home2);
+        setContentView(R.layout.activity_home);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //NavigationDrawer
@@ -206,13 +189,21 @@ public class activity_home extends FragmentActivity implements NavigationView.On
     }
 
     public void SelectGetARide(View v) {
-        Intent GetRideIntent = new Intent(activity_home.this, activity_go.class);
-        startActivity(GetRideIntent);
+        if(complete == true){
+            Intent GetRideIntent = new Intent(activity_home.this, activity_go.class);
+            startActivity(GetRideIntent);
+        }else{
+            Toast.makeText(activity_home.this, "Please complete the profile in profile", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void SelectOfferARide(View v) {
-        Intent SetRideIntent = new Intent(activity_home.this, activity_drive.class);
-        startActivity(SetRideIntent);
+        if(complete == true){
+            Intent SetRideIntent = new Intent(activity_home.this, activity_drive.class);
+            startActivity(SetRideIntent);
+        }else{
+            Toast.makeText(activity_home.this, "Please complete the profile in profile", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void SelectProfile(View v) {
@@ -221,8 +212,12 @@ public class activity_home extends FragmentActivity implements NavigationView.On
     }
 
     public void SelectRating(View v) {
-        Intent RatingIntent = new Intent(activity_home.this, activity_rating.class);
-        startActivity(RatingIntent);
+        if(complete == true){
+            Intent RatingIntent = new Intent(activity_home.this, activity_rating.class);
+            startActivity(RatingIntent);
+        }else{
+            Toast.makeText(activity_home.this, "Please complete the profile in profile", Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -438,12 +433,9 @@ public class activity_home extends FragmentActivity implements NavigationView.On
 
             case R.id.nav_rating:
                 Log.d("NAVI", "onNavigationItemSelected: RATING ");
-                if(complete == true){
+
                     drawer.closeDrawer(Gravity.RIGHT);
                     SelectRating(null);
-                }else{
-                    Toast.makeText(activity_home.this, "Please complete the profile in profile", Toast.LENGTH_LONG).show();
-                }
                 break;
 
             case R.id.nav_sign:
