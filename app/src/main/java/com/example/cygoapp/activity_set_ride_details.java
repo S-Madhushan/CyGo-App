@@ -56,7 +56,7 @@ public class activity_set_ride_details extends AppCompatActivity implements Seri
     private String strDate, strTime;
     private long leaveTime;
 
-    private float price = 0.03f;
+    private float price = 0.00f;
     int pickUpDistance = 10;
     int passengers = 1;
     int minRangeInt = 20;
@@ -209,10 +209,10 @@ public class activity_set_ride_details extends AppCompatActivity implements Seri
         rangeValueTextView = (TextView) findViewById(R.id.setRideDetails_textView_minmatka);
 
         examplePriceTxt.setText(getString(R.string.setridedetails_distance_example) + " " +  distance + " km \n"
-                + getString(R.string.setridedetails_price_example) + String.format("%.2f", doubleDistance * 0.03) + " eur");
+                + getString(R.string.setridedetails_price_example) + String.format("%.2f", doubleDistance * 0.00) + " eur");
         rangeValueTextView.setText(getString(R.string.setridedetails_ride_length_text) + " " +  minRangeInt + "km");
         fetchRange.setText(getString(R.string.setridedetails_max_pickup_dist_text) + " " +  pickUpDistance + "km");
-        priceTxt.setText(String.format(getString(R.string.setridedetails_price_example) + " " +  "%.3f", price) + getString(R.string.setridedetails_km_example));
+        priceTxt.setText(String.format(getString(R.string.setridedetails_price_example) + " " +  "%.2f", price) + getString(R.string.setridedetails_km_example));
 
         //Number Picker
         numberPicker = findViewById(R.id.setRideDetails_numberPicker_passengers);
@@ -274,8 +274,8 @@ public class activity_set_ride_details extends AppCompatActivity implements Seri
         seekBar3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                price = ((float) progress / 1000);
-                priceTxt.setText(getString(R.string.setridedetails_price_hint) + " " + String.format("%.3f", price) + getString(R.string.setridedetails_km_example));
+                price = ((float) progress / 1);
+                priceTxt.setText(getString(R.string.setridedetails_price_hint) + " " + String.format("%.2f", price) + getString(R.string.setridedetails_km_example));
                 examplePriceTxt.setText(getString(R.string.setridedetails_distance_example) + " " +  distance + " km \n" + getString(R.string.setridedetails_price_example) + " " +  String.format("%.2f", doubleDistance * price) + " LKR");
 
             }

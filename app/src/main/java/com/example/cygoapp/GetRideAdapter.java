@@ -82,14 +82,14 @@ public class GetRideAdapter extends BaseAdapter {
         String newTime = CalendarHelper.getHHMMString(date);
 
         //changes long to string and estimate price per 100km
-        String price = String.format("%.2f", rideUserArrayList.get(position).getRide().getPrice() * 100);
+        String price = String.format("%.1f", rideUserArrayList.get(position).getRide().getPrice());
 
         //printing data from array lists to list view
         viewHolder.startPointDestinationTextView.setText(rideUserArrayList.get(position).getRide().getStartCity() + " - " + rideUserArrayList.get(position).getRide().getEndCity());
-        viewHolder.rideProviderTextView.setText(rideUserArrayList.get(position).getUser().getName());
+        viewHolder.rideProviderTextView.setText(rideUserArrayList.get(position).getUser().getName().split(" ")[0]);
         viewHolder.dateTextView.setText(newDate);
         viewHolder.timeTextView.setText(newTime);
-        viewHolder.priceTextView.setText(price + "€");
+        viewHolder.priceTextView.setText(price + "LKR");
 
         //if you press info image next to price, do this
         viewHolder.infoImageView.setOnClickListener(new View.OnClickListener() {

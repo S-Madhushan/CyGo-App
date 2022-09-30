@@ -13,6 +13,7 @@ import android.content.Intent;
 
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.util.Log;
 
 import android.view.Gravity;
@@ -45,6 +46,7 @@ import com.squareup.picasso.Picasso;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,7 +59,7 @@ public class activity_home extends FragmentActivity implements NavigationView.On
     // NavigationDrawer menu
     DrawerLayout drawer;
     NavigationView navigationView;
-
+    ProgressBar progressBar;
     TextView tv_rating, reviewAmount;
 
     RatingBar ratingBar;
@@ -74,6 +76,7 @@ public class activity_home extends FragmentActivity implements NavigationView.On
     ImageView bookBackground;
     ImageView offerbackground;
     ImageView userAcc;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +84,14 @@ public class activity_home extends FragmentActivity implements NavigationView.On
         setContentView(R.layout.activity_home);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        this.mHandler = new Handler();
+        m_Runnable.run();
+
         //NavigationDrawer
         drawer =  findViewById(R.id.drawer_layout);
         navigationView =  findViewById(R.id.nav_view);
         userAcc = findViewById(R.id.imgUsrAcc);
-
+        progressBar = findViewById(R.id.progressBar);
         reviewAmount =findViewById(R.id.main_reviewsText);
         ratingBar = findViewById(R.id.main_ratingBar);
 
@@ -96,6 +102,8 @@ public class activity_home extends FragmentActivity implements NavigationView.On
         TextView naviEmail = (TextView) headerView.findViewById(R.id.navi_header_emailtext);
         TextView main_nameText = findViewById(R.id.main_nameText);
 
+
+        progressBar.setVisibility(View.VISIBLE);
 
         Picasso.get().load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).into(userAcc);
 
@@ -178,6 +186,24 @@ public class activity_home extends FragmentActivity implements NavigationView.On
 
     }
 
+    private final Runnable m_Runnable = new Runnable()
+    {
+        public void run()
+
+        {
+            activity_home.this.mHandler.postDelayed(m_Runnable, 5000);
+        }
+
+    };//runnable
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mHandler.removeCallbacks(m_Runnable);
+        finish();
+
+    }
 
     public void AppSettings(View v) {
 
@@ -247,15 +273,18 @@ public class activity_home extends FragmentActivity implements NavigationView.On
                         curUserRides.addAll((ArrayList<String>) task.getResult().get("bookedRides"));
                         NUMBER_OF_BOOKED_TASKS = curUserRides.size();
                         Log.d("TAG", "12313123: ");
+                        progressBar.setVisibility(View.GONE);
                     }
                     catch (Exception e){
                         e.printStackTrace();
                         loadOfferedRides();
+
                     }
                 }
                 else{
                     //task is not successful
                     loadOfferedRides();
+                    progressBar.setVisibility(View.GONE);
                 }
             }
         });

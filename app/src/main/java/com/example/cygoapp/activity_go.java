@@ -141,7 +141,7 @@ public class activity_go extends AppCompatActivity {
         });
     }
 
-    //Layoutin valikon animaation toiminnot
+
     public void expandableDrawer(View view) { animationHandler(); }
     private void animationHandler(){
         if (!drawer_expand){
@@ -437,14 +437,13 @@ public class activity_go extends AppCompatActivity {
                 switch (position)
                 {
                     case 0:
-                        //default, when user haven't selected any sorting method
+
                         spinnerCase = 0;
                         getRideAdapter.notifyDataSetChanged();
                         break;
 
                     case 1:
-                        //case 1 is when user select "Aika"
-                        //prints time from lowest to highest
+
                         spinnerCase = 1;
                         final GetRideSorting getRideSorting;
                         getRideSorting = new GetRideSorting(new GetRideSortingInterface() {
@@ -457,8 +456,8 @@ public class activity_go extends AppCompatActivity {
                         break;
 
                     case 2:
-                        //case 2 is when user select "Aika (nouseva)
-                        //prints time from highest to lowest
+
+
                         spinnerCase = 2;
                         getRideSorting = new GetRideSorting(new GetRideSortingInterface() {
                             @Override
@@ -470,8 +469,8 @@ public class activity_go extends AppCompatActivity {
                         break;
 
                     case 3:
-                        //case 3 is when user select "hinta"
-                        //prints price from lowers to highest
+
+
                         spinnerCase = 3;
                         getRideSorting = new GetRideSorting(new GetRideSortingInterface() {
                             @Override
@@ -483,8 +482,8 @@ public class activity_go extends AppCompatActivity {
                         break;
 
                     case 4:
-                        //case 4 is when user select "hinta(nouseva)"
-                        //prints price from highest to lowest
+
+
                         spinnerCase = 4;
                         getRideSorting = new GetRideSorting(new GetRideSortingInterface() {
                             @Override

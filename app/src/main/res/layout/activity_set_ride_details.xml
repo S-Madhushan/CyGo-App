@@ -380,7 +380,7 @@
             android:backgroundTint="@color/white"
             android:progressDrawable="@drawable/custom_seekbar_progress"
             android:thumb="@drawable/custom_seekbar_thumb"
-            android:progress="30"
+            android:progress="0"
             app:layout_constraintTop_toBottomOf="@id/setRideDetails_textView_hinta"
             app:layout_constraintStart_toEndOf="@id/setRideDetails_guideline_left"
             app:layout_constraintEnd_toStartOf="@id/setRideDetails_guideline_right"/>

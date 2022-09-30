@@ -65,11 +65,11 @@ public class SetRideDataParser {
                     jSteps = ((JSONObject) jLegs.get(j)).getJSONArray("steps");
                     Log.d("mytag", "jsteps: " + jSteps);
 
-                    //Kokonaismatkan haku jsonista
+
                     jDistance = ((JSONObject) jLegs.get(j)).getJSONObject("distance");
                     totalDistance = totalDistance + Integer.parseInt(jDistance.getString("value"));
 
-                    //Kokonaisajan haku jsonista
+
                     jDuration = ((JSONObject) jLegs.get(j)).getJSONObject("duration");
                     totalSeconds = totalSeconds + Integer.parseInt(jDuration.getString("value"));
 
@@ -92,16 +92,16 @@ public class SetRideDataParser {
                         }
                     }
 
-                    //matkan pituuden määritys
+
                     int dist = totalDistance / 1000;
                     //SetRideConstant.DISTANCE = String.valueOf(dist);
 
-                    //matka ajan määritys
+
                     int hours = (totalSeconds / 3600);
                     int minutes = ((totalSeconds - hours * 3600) / 60);
                     //SetRideConstant.DURATION = String.valueOf(hours + "h " + minutes + "min");
 
-                    //Matkan pituuden määritys SetRidePolylineDataan. Hashmap = key "pl0, pl1, jne.."
+
                     duration =  String.valueOf(hours) + " h " + minutes + " min";
                     distance = String.valueOf(dist);
 

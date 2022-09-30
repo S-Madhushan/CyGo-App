@@ -5,7 +5,7 @@ import java.util.List;
 
 public class AppMath {
 
-    //Haversine algorithm
+
     private static double distanceBetweenCoordinates(double lat1, double lng1, double lat2, double lng2)
     {
         double dLat = Math.toRadians(lat2-lat1);

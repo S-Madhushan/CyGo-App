@@ -204,12 +204,22 @@
                 android:layout_marginEnd="6dp"
                 android:layout_marginTop="5dp"
                 />
+            <TextView
+                android:id="@+id/main_ride_details_contact"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/main_ride_details_pets"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginTop="5dp"
+                />
 
             <TextView
                 android:id="@+id/main_ride_details_luggage_txt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/main_ride_details_pets"
+                app:layout_constraintTop_toBottomOf="@id/main_ride_details_contact"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/main_ride_details_guideline_middle2"
                 android:scrollbars="vertical"
@@ -223,7 +233,7 @@
                 android:id="@+id/main_ride_details_departure_txt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/main_ride_details_pets"
+                app:layout_constraintTop_toBottomOf="@id/main_ride_details_contact"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/main_ride_details_guideline_middle2"
                 android:scrollbars="vertical"

@@ -86,7 +86,7 @@ public class MainActivityRidesAdapter extends BaseAdapter {
 
         Picasso.get().load(rideUserArrayList.get(position).getUser().getImgUri()).into(viewHolder.userPicture);
         viewHolder.address.setText(rideUserArrayList.get(position).getRide().getStartCity() + " - " + rideUserArrayList.get(position).getRide().getEndCity());
-        viewHolder.userName.setText(rideUserArrayList.get(position).getUser().getName());
+        viewHolder.userName.setText(rideUserArrayList.get(position).getUser().getName().split(" ")[0]);
         viewHolder.date.setText(newDate);
         viewHolder.time.setText(newTime);
 

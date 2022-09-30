@@ -57,7 +57,7 @@ interface MainActivityRideDetailsInterface{
 public class MainActivityRideDetails extends AsyncTask<Void, Void, Bitmap>{
 
     private TextView startPointDialog, destinationDialog, leaveTimeDialog, durationDialog, priceDialog, participantsDialog,
-                freeSeatsDialog, wayPointsDialog, userNameDialog, distanceDialog, petsDialog, departureTxt, luggageTxt;
+                freeSeatsDialog, wayPointsDialog, userNameDialog, userPhoneDialog, distanceDialog, petsDialog, departureTxt, luggageTxt;
     private Button posBtn, negBtn;
     private ImageView profilePicture, closeDialogBtn;
     private NestedScrollView detailsView;
@@ -94,6 +94,9 @@ public class MainActivityRideDetails extends AsyncTask<Void, Void, Bitmap>{
         userNameDialog = dialogLayout.findViewById(R.id.main_ride_details_user_name);
         String userName = rideUserArrayList.get(position).getUser().getName();
         userNameDialog.setText(userName);
+        String contact = rideUserArrayList.get(position).getUser().getContact();
+        userPhoneDialog = dialogLayout.findViewById(R.id.main_ride_details_contact);
+        userPhoneDialog.setText("Contact Number : "+contact);
         participantsDialog = dialogLayout.findViewById(R.id.main_ride_participants);
         startPointDialog = dialogLayout.findViewById(R.id.main_ride_details_start_point);
         String startPoint = context.getResources().getString(R.string.find_ride_details_startpoint);
@@ -111,10 +114,10 @@ public class MainActivityRideDetails extends AsyncTask<Void, Void, Bitmap>{
         String distance = context.getResources().getString(R.string.find_ride_details_distance);
         distanceDialog.setText(distance + ": " + rideUserArrayList.get(position).getRide().getDistance());
         priceDialog = dialogLayout.findViewById(R.id.main_ride_details_price);
-        String pricePer100 = String.format("%.2f", rideUserArrayList.get(position).getRide().getPrice() * 100);
+        String pricePerkm = String.format("%.2f", rideUserArrayList.get(position).getRide().getPrice() );
         String price = context.getResources().getString(R.string.find_ride_details_price);
-        String per100 = context.getResources().getString(R.string.find_ride_details_per_100_km);
-        priceDialog.setText(price + ": " + pricePer100 + " " + per100);
+        String per = context.getResources().getString(R.string.find_ride_details_per_100_km);
+        priceDialog.setText(price + ": " + pricePerkm + " " + per);
         freeSeatsDialog = dialogLayout.findViewById(R.id.main_ride_details_free_seats);
         String freeSeat = context.getResources().getString(R.string.find_ride_details_free_seats);
         freeSeatsDialog.setText(freeSeat + ": " + rideUserArrayList.get(position).getRide().getFreeSlots());
@@ -221,7 +224,7 @@ public class MainActivityRideDetails extends AsyncTask<Void, Void, Bitmap>{
                         public void onClick(DialogInterface dialog, int which) {
                             try{
                                 //Remove the ride from database
-                                FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update(
+                                FirebaseFirestore.getInstance().collection("customers").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update(
                                         "bookedRides", FieldValue.arrayRemove(rideUserArrayList.get(position).getRideId()));
                                 //Add one free seat to database
                                 FirebaseFirestore.getInstance().collection("rides").document(rideUserArrayList.get(position).getRideId()).update(
@@ -257,7 +260,7 @@ public class MainActivityRideDetails extends AsyncTask<Void, Void, Bitmap>{
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //Delete the ride for each user
-                            FirebaseFirestore.getInstance().collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            FirebaseFirestore.getInstance().collection("customers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if(task.isSuccessful()) {
@@ -267,7 +270,7 @@ public class MainActivityRideDetails extends AsyncTask<Void, Void, Bitmap>{
                                                 ArrayList<String> rides = (ArrayList<String>) doc.get("bookedRides");
                                                 if(rides != null) {
                                                     if(rides.contains(rideUserArrayList.get(position).getRideId())) {
-                                                        FirebaseFirestore.getInstance().collection("users").document(doc.getId()).update(
+                                                        FirebaseFirestore.getInstance().collection("customers").document(doc.getId()).update(
                                                                 "bookedRides", FieldValue.arrayRemove(rideUserArrayList.get(position).getRideId())
                                                         );
                                                     }
@@ -306,7 +309,7 @@ public class MainActivityRideDetails extends AsyncTask<Void, Void, Bitmap>{
         if(rideUserArrayList.get(position).getRide().getParticipants().size() > 0 && page == 1) {
             final int[] taskCount = {rideUserArrayList.get(position).getRide().getParticipants().size()};
             for (int i = 0; i < rideUserArrayList.get(position).getRide().getParticipants().size(); i++) {
-                FirebaseFirestore.getInstance().collection("users").document(rideUserArrayList.get(position).getRide().getParticipants().get(i)).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                FirebaseFirestore.getInstance().collection("customers").document(rideUserArrayList.get(position).getRide().getParticipants().get(i)).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
