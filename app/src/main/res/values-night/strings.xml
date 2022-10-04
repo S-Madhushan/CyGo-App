@@ -77,7 +77,7 @@
     <string name="setridedetails_distanceandpricing_text">Distances &amp; Pricing</string>
     <string name="setridedetails_max_pickup_dist_text">Max pickup distance</string>
     <string name="setridedetails_ride_length_text">Travel distance</string>
-    <string name="setridedetails_example_km_eur_text">Distance:\nPrice: 0 eur</string>
+    <string name="setridedetails_example_km_eur_text">Distance:\nPrice: 0 LKR</string>
     <string name="setridedetails_price_hint">Price:</string>
     <string name="setridedetails_confirm_ride_btn_text">Confirm Ride</string>
     <string name="setridedetails_distance_example">Distance: </string>

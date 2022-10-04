@@ -209,7 +209,7 @@ public class activity_set_ride_details extends AppCompatActivity implements Seri
         rangeValueTextView = (TextView) findViewById(R.id.setRideDetails_textView_minmatka);
 
         examplePriceTxt.setText(getString(R.string.setridedetails_distance_example) + " " +  distance + " km \n"
-                + getString(R.string.setridedetails_price_example) + String.format("%.2f", doubleDistance * 0.00) + " eur");
+                + getString(R.string.setridedetails_price_example) + String.format("%.2f", doubleDistance * 0.00) + " LKR");
         rangeValueTextView.setText(getString(R.string.setridedetails_ride_length_text) + " " +  minRangeInt + "km");
         fetchRange.setText(getString(R.string.setridedetails_max_pickup_dist_text) + " " +  pickUpDistance + "km");
         priceTxt.setText(String.format(getString(R.string.setridedetails_price_example) + " " +  "%.2f", price) + getString(R.string.setridedetails_km_example));

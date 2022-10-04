@@ -278,7 +278,7 @@ public class activity_home extends FragmentActivity implements NavigationView.On
                     catch (Exception e){
                         e.printStackTrace();
                         loadOfferedRides();
-
+                        progressBar.setVisibility(View.GONE);
                     }
                 }
                 else{
